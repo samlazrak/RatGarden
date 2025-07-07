@@ -9,7 +9,7 @@ tags: []
 > 
 > This is my digital garden—a collection of notes, projects, and thoughts I'm cultivating as I work at the intersection of technology, medicine, and community development.
 
-<span style="font-size: 1.3em;">🌻[Portfolio](https://samlazrak.github.io/) 🐙[GitHub](https://github.com/samuellazrak) 💼[LinkedIn](https://linkedin.com/in/samuellazrak)</span>
+<span style="font-size: 1.3em;">🌻[Portfolio](https://samlazrak.github.io/) 🐙[GitHub](https://github.com/samuellazrak) 💼[LinkedIn](https://linkedin.com/in/samuellazrak) 📧[Email](mailto:contact@samlazrak.com)</span> 
 
 
 
