@@ -46,7 +46,26 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      title: "Explorer",
+      folderClickBehavior: "link",
+      folderDefaultState: "collapsed",
+      useSavedState: true,
+      mapFn: (node) => node,
+      sortFn: (a, b) => {
+        // folders first, then files, both alphabetically
+        if ((!a.file && !b.file) || (a.file && b.file)) {
+          return a.displayName.localeCompare(b.displayName, undefined, { numeric: true, sensitivity: 'base' })
+        }
+        if (a.file && !b.file) {
+          return 1
+        } else {
+          return -1
+        }
+      },
+      filterFn: (node) => node.name !== "tags",
+    }),
+    Component.DesktopOnly(Component.TableOfContents()),
   ],
   right: [
     Component.ConditionalRender({
@@ -64,7 +83,17 @@ export const defaultContentPageLayout: PageLayout = {
       component: Component.Graph(),
       condition: (page) => page.fileData.slug !== "index",
     }),
-    Component.DesktopOnly(Component.TableOfContents()),
+    Component.ConditionalRender({
+      component: Component.SemanticLinks({
+        title: "Related Content",
+        maxSuggestions: 5,
+        minStrength: 0.1,
+        showStrength: true,
+        showConfidence: false,
+        showExplanation: true,
+      }),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
     Component.Backlinks(),
   ],
 }

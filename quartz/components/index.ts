@@ -25,6 +25,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import HomePageLinks from "./HomePageLinks"
 import TwoColumnNotes from "./TwoColumnNotes"
+import SemanticLinks from "./SemanticLinks"
 
 export {
   ArticleTitle,
@@ -54,4 +55,5 @@ export {
   ConditionalRender,
   HomePageLinks,
   TwoColumnNotes,
+  SemanticLinks,
 }
