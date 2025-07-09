@@ -165,6 +165,62 @@
     margin-top: 0.3rem;
   }
   
+  .sentiment-alignment {
+    font-size: 1rem;
+    cursor: help;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+  
+  .semantic-sentiment {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .sentiment-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    
+    &.sentiment-positive {
+      background-color: color-mix(in srgb, #22c55e 15%, var(--light));
+      color: #15803d;
+    }
+    
+    &.sentiment-negative {
+      background-color: color-mix(in srgb, #ef4444 15%, var(--light));
+      color: #dc2626;
+    }
+    
+    &.sentiment-neutral {
+      background-color: color-mix(in srgb, #6b7280 15%, var(--light));
+      color: #374151;
+    }
+    
+    &.sentiment-unknown {
+      background-color: color-mix(in srgb, var(--gray) 15%, var(--light));
+      color: var(--gray);
+    }
+  }
+  
+  .sentiment-emoji {
+    font-size: 0.9rem;
+  }
+  
+  .sentiment-label {
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
   .semantic-links-footer {
     margin-top: 1rem;
     padding-top: 0.5rem;
@@ -210,6 +266,28 @@
       color: var(--secondary);
     }
   }
+  
+  .sentiment-indicator {
+    &.sentiment-positive {
+      background-color: color-mix(in srgb, #22c55e 20%, var(--light));
+      color: #10b981;
+    }
+    
+    &.sentiment-negative {
+      background-color: color-mix(in srgb, #ef4444 20%, var(--light));
+      color: #f87171;
+    }
+    
+    &.sentiment-neutral {
+      background-color: color-mix(in srgb, #6b7280 20%, var(--light));
+      color: #9ca3af;
+    }
+    
+    &.sentiment-unknown {
+      background-color: color-mix(in srgb, var(--gray) 20%, var(--light));
+      color: var(--gray);
+    }
+  }
 }
 
 // Mobile responsive adjustments
@@ -232,6 +310,19 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 0.2rem;
+    }
+    
+    .semantic-sentiment {
+      margin-top: 0.3rem;
+      
+      .sentiment-indicator {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.3rem;
+        
+        .sentiment-label {
+          display: none; // Hide labels on mobile to save space
+        }
+      }
     }
   }
 }

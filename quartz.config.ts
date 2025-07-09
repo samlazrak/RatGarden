@@ -80,6 +80,14 @@ const config: QuartzConfig = {
       Plugin.ContentPage(),
       Plugin.FolderPage(),
       Plugin.TagPage(),
+      Plugin.SemanticLinkDiscovery({
+        enableSemanticLinks: true,
+        enableCrossReferenceStrength: true,
+        minSimilarity: 0.1,
+        maxSuggestedLinks: 8,
+        semanticLinkThreshold: 0.1,
+        cacheEmbeddings: true,
+      }),
       Plugin.ContentIndex({
         enableSiteMap: true,
         enableRSS: true,
