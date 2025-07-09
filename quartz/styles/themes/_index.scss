@@ -1405,7 +1405,7 @@ body {
             color: var(--nav-item-color-active);
             font-weight: var(--nav-item-weight-active);
           }
-          &[data-for$="/index"] {
+          &[data-for*="/index"] {
             padding-inline-start: 8px;
           }
           padding-inline-start: 0;

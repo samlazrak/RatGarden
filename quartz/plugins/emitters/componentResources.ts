@@ -281,11 +281,9 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
         joinScripts(componentResources.afterDOMLoaded),
       ])
 
-      yield write({
-        ctx,
-        slug: "the-rats-garden-of-wisdom" as FullSlug,
-        ext: ".css",
-        content: transform({
+      let transformedCSS = stylesheet
+      try {
+        transformedCSS = transform({
           filename: "the-rats-garden-of-wisdom.css",
           code: Buffer.from(stylesheet),
           minify: true,
@@ -297,7 +295,18 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
             chrome: 109 << 16,
           },
           include: Features.MediaQueries,
-        }).code.toString(),
+        }).code.toString()
+      } catch (err) {
+        console.error("Failed to transform CSS with lightningcss:", err)
+        console.error("Falling back to unminified CSS")
+        transformedCSS = stylesheet
+      }
+
+      yield write({
+        ctx,
+        slug: "the-rats-garden-of-wisdom" as FullSlug,
+        ext: ".css",
+        content: transformedCSS,
       })
 
       yield write({
