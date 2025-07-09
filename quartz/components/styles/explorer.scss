@@ -30,10 +30,16 @@
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--light);
+  border: 1px solid var(--lightgray);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
-  min-height: 1.2rem;
   flex: 0 1 auto;
   &.collapsed {
+    min-height: auto;
     flex: 0 1 1.2rem;
     & .fold {
       transform: rotateZ(-90deg);
@@ -41,7 +47,7 @@
   }
 
   & .fold {
-    margin-left: 0.5rem;
+    margin-left: auto;
     transition: transform 0.3s ease;
     opacity: 0.8;
   }
@@ -97,22 +103,56 @@ button.desktop-explorer {
   text-align: left;
   cursor: pointer;
   padding: 0;
-  color: var(--dark);
+  color: var(--darkgray);
   display: flex;
   align-items: center;
+  width: 100%;
 
   & h2 {
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     display: inline-block;
     margin: 0;
+    
+    &::before {
+      content: "📁";
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
   }
 }
 
 .explorer-content {
   list-style: none;
   overflow: hidden;
-  overflow-y: auto;
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
+  
+  // Only add scrolling constraints when there are many items
+  &:has(li:nth-child(8)) {
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray) var(--light);
+    
+    // Custom scrollbar for webkit browsers
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: var(--light);
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 3px;
+      
+      &:hover {
+        background: var(--darkgray);
+      }
+    }
+  }
 
   & ul {
     list-style: none;
@@ -266,5 +306,28 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
 .mobile-no-scroll {
   @media all and ($mobile) {
     overscroll-behavior: none;
+  }
+}
+
+// Dark mode adjustments
+.darkmode .explorer {
+  background-color: var(--light);
+  border-color: var(--lightgray);
+  
+  button.mobile-explorer,
+  button.desktop-explorer {
+    color: var(--darkgray);
+  }
+  
+  .explorer-content {
+    scrollbar-color: var(--gray) var(--light);
+    
+    & ul li > a {
+      color: var(--dark);
+      
+      &.active {
+        color: var(--tertiary);
+      }
+    }
   }
 }

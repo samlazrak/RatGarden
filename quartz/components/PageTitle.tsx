@@ -37,7 +37,7 @@ PageTitle.css = `
 .page-title-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -46,7 +46,7 @@ PageTitle.css = `
   font-size: 1.5rem;
   margin: 0;
   font-family: var(--titleFont);
-  text-align: center;
+  text-align: left;
   color: var(--secondary);
 }
 
@@ -54,6 +54,21 @@ PageTitle.css = `
   font-size: 1.75rem;
   margin: 0;
   font-family: var(--titleFont);
+  
+  a {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media all and ($mobile) {
+  .page-title-container {
+    align-items: center;
+  }
+  
+  .page-title-text {
+    text-align: center;
+  }
 }
 `
 

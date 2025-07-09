@@ -46,7 +46,10 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer({
+    Component.DesktopOnly(Component.LeftSidebarTabs({
+      defaultTab: "explorer"
+    })),
+    Component.MobileOnly(Component.Explorer({
       title: "Explorer",
       folderClickBehavior: "link",
       folderDefaultState: "collapsed",
@@ -64,8 +67,7 @@ export const defaultContentPageLayout: PageLayout = {
         }
       },
       filterFn: (node) => node.name !== "tags",
-    }),
-    Component.DesktopOnly(Component.TableOfContents()),
+    })),
   ],
   right: [
     Component.ConditionalRender({
@@ -84,17 +86,19 @@ export const defaultContentPageLayout: PageLayout = {
       condition: (page) => page.fileData.slug !== "index",
     }),
     Component.ConditionalRender({
-      component: Component.SemanticLinks({
-        title: "Related Content",
-        maxSuggestions: 5,
-        minStrength: 0.1,
-        showStrength: true,
-        showConfidence: false,
-        showExplanation: true,
+      component: Component.RightSidebarTabs({
+        defaultTab: "related",
+        semanticLinksOptions: {
+          title: "Related Content",
+          maxSuggestions: 5,
+          minStrength: 0.1,
+          showStrength: true,
+          showConfidence: false,
+          showExplanation: true,
+        }
       }),
       condition: (page) => page.fileData.slug !== "index",
     }),
-    Component.Backlinks(),
   ],
 }
 

@@ -234,6 +234,28 @@ a {
       z-index: 1;
       grid-area: grid-sidebar-left;
       flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: var(--lightgray) transparent;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--lightgray);
+        border-radius: 3px;
+
+        &:hover {
+          background-color: var(--gray);
+        }
+      }
+
       @media all and ($mobile) {
         gap: 0;
         align-items: center;
@@ -243,6 +265,7 @@ a {
         flex-direction: row;
         padding: 0;
         padding-top: 2rem;
+        overflow-y: visible;
       }
     }
 
