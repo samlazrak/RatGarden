@@ -1,16 +1,19 @@
 ---
 title: Building AI-Powered Semantic Links for Digital Gardens
-tags: [ai, machine-learning, semantic-analysis, digital-garden, knowledge-management, tensorflow, quartz, nlp, content-analysis]
+tags:
+  - ai
+  - machine-learning
+  - semantic-analysis
+  - digital-garden
+  - knowledge-management
+  - tensorflow
+  - quartz
+  - nlp
+  - content-analysis
 date: 2025-01-09
 ---
 
 # Building AI-Powered Semantic Links for Digital Gardens
-
-## The Problem
-
-My digital garden had dozens of notes on AI, biomedical research, art, and tech. But the connections between them? Invisible. Sure, I could manually link everything, but that doesn't scale.
-
-The brain finds patterns across domains automatically. Note-taking systems don't. They rely on explicit links you remember to create. Missing: the subtle connections, the weak signals, the unexpected insights.
 
 ## The Solution
 
@@ -149,29 +152,12 @@ const SemanticLinks: QuartzComponent = ({ fileData, allFiles }) => {
 }
 ```
 
-## Results
-
-Live connections I'd never find manually:
-
-- **"Book Arts" ↔ "My Art" (17%)**: Shared "art" tags, sentiment aligned
-- **"PhD Research" ↔ "Publications" (14%)**: Research links with emotional context
-- **Cross-domain insights**: Biomedical research connects to AI projects
-
-**Sentiment Features:**
-- Emotional compatibility (🤝 aligned, 🔄 different)
-- Color-coded sentiment (😊 positive, 😞 negative, 😐 neutral)
-- Explanations include sentiment analysis
-- Optional sentiment-weighted similarity
-
 ## What I Learned
 
 Traditional knowledge management: remembering connections.  
 AI-powered knowledge management: discovering connections.
 
 The system surfaces what I might not notice. The weak connections (14-20%) matter most—they're where innovation happens at the fuzzy boundaries between ideas.
-
-## Future Directions
-
 ### Next Steps:
 1. **Multi-Modal Analysis**: Connect images, videos with text
 2. **Temporal Evolution**: Track how relationships change over time
@@ -202,9 +188,7 @@ calculateSentimentAwareSimilarity(source, target, {
 
 ## The Bigger Picture
 
-Cognitive amplification, not replacement. The system shows connections to explore, not what to think.
-
-My digital garden is both knowledge repository and learning laboratory. Each project teaches how AI can make human intelligence more powerful.
+Cognitive amplification, not replacement. The system shows connections to explore, not what to think. My digital garden is both knowledge repository and learning laboratory. Each project teaches how AI can make human intelligence more powerful.
 
 ## Technical Notes
 
