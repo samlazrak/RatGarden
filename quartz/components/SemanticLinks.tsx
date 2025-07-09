@@ -10,6 +10,8 @@ export interface Options {
   showStrength: boolean
   showConfidence: boolean
   showExplanation: boolean
+  showSentiment: boolean
+  showSentimentAlignment: boolean
 }
 
 const defaultOptions: Options = {
@@ -19,6 +21,8 @@ const defaultOptions: Options = {
   showStrength: true,
   showConfidence: false,
   showExplanation: true,
+  showSentiment: true,
+  showSentimentAlignment: true,
 }
 
 export default ((opts?: Partial<Options>) => {
@@ -58,6 +62,44 @@ export default ((opts?: Partial<Options>) => {
       return `${Math.round(strength * 100)}%`
     }
 
+    const getSentimentEmoji = (emotion: string): string => {
+      switch (emotion) {
+        case 'positive': return '😊'
+        case 'negative': return '😞'
+        case 'neutral': return '😐'
+        default: return '❓'
+      }
+    }
+
+    const getSentimentColor = (emotion: string): string => {
+      switch (emotion) {
+        case 'positive': return 'sentiment-positive'
+        case 'negative': return 'sentiment-negative'
+        case 'neutral': return 'sentiment-neutral'
+        default: return 'sentiment-unknown'
+      }
+    }
+
+    const formatPolarity = (polarity: number): string => {
+      if (polarity > 0.2) return 'positive'
+      if (polarity < -0.2) return 'negative'
+      return 'neutral'
+    }
+
+    const getSentimentAlignmentIndicator = (alignment: any): string => {
+      if (!alignment) return ''
+      
+      if (alignment.emotionMatch && alignment.compatibility > 0.7) {
+        return '🤝' // Strong alignment
+      } else if (alignment.emotionMatch) {
+        return '👍' // Same emotion
+      } else if (alignment.compatibility > 0.5) {
+        return '⚖️' // Balanced
+      } else {
+        return '🔄' // Different sentiment
+      }
+    }
+
     return (
       <div class={`semantic-links ${displayClass ?? ""}`}>
         <h3>{options.title}</h3>
@@ -66,6 +108,10 @@ export default ((opts?: Partial<Options>) => {
             const targetFile = allFiles.find(f => f.slug === link.target)
             const targetTitle = targetFile?.frontmatter?.title || link.target
             const relativeUrl = resolveRelative(fileData.slug!, link.target)
+            
+            // Get sentiment data for source and target
+            const sourceSentiment = fileData.semanticEmbedding?.sentiment
+            const targetSentiment = targetFile?.semanticEmbedding?.sentiment
             
             return (
               <div 
@@ -91,6 +137,11 @@ export default ((opts?: Partial<Options>) => {
                         {Math.round(link.confidence * 100)}% confidence
                       </span>
                     )}
+                    {options.showSentimentAlignment && link.sentimentAlignment && (
+                      <span class="sentiment-alignment" title={`Sentiment compatibility: ${Math.round(link.sentimentAlignment.compatibility * 100)}%`}>
+                        {getSentimentAlignmentIndicator(link.sentimentAlignment)}
+                      </span>
+                    )}
                   </div>
                 </div>
                 
@@ -104,6 +155,23 @@ export default ((opts?: Partial<Options>) => {
                   </span>
                 </div>
                 
+                {options.showSentiment && (sourceSentiment || targetSentiment) && (
+                  <div class="semantic-sentiment">
+                    {sourceSentiment && (
+                      <span class={`sentiment-indicator ${getSentimentColor(sourceSentiment.emotion)}`}>
+                        <span class="sentiment-emoji">{getSentimentEmoji(sourceSentiment.emotion)}</span>
+                        <span class="sentiment-label">This: {sourceSentiment.emotion}</span>
+                      </span>
+                    )}
+                    {targetSentiment && (
+                      <span class={`sentiment-indicator ${getSentimentColor(targetSentiment.emotion)}`}>
+                        <span class="sentiment-emoji">{getSentimentEmoji(targetSentiment.emotion)}</span>
+                        <span class="sentiment-label">Target: {targetSentiment.emotion}</span>
+                      </span>
+                    )}
+                  </div>
+                )}
+                
                 {options.showExplanation && link.explanation && (
                   <div class="semantic-explanation">
                     {link.explanation}
@@ -116,7 +184,7 @@ export default ((opts?: Partial<Options>) => {
         
         <div class="semantic-links-footer">
           <span class="semantic-links-note">
-            Links suggested by AI based on content similarity
+            Links suggested by AI based on content similarity and sentiment analysis
           </span>
         </div>
       </div>

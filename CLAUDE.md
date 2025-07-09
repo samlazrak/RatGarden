@@ -17,7 +17,7 @@ This is a **Quartz 4** static site generator project for "The Rat's Garden" - a 
 ### Code Quality
 - `npm run check` - Run TypeScript type checking and Prettier formatting check
 - `npm run format` - Format code with Prettier
-- `npm test` - Run tests using tsx
+- `npm run test` - Run tests using tsx
 
 ### Utility Commands
 - `npm run generate-graph-links` - Generate invisible graph links in index.md to improve graph visualization
@@ -71,3 +71,6 @@ The site uses carefully configured plugins for:
 - Custom graph link generation script runs before each build to maintain graph connectivity
 - Hot reload is implemented with WebSocket connections
 - The site is configured for deployment at `garden.samlazrak.com`
+
+## Writing Guidelines
+- When writing for blog posts, especially for the RatGarden website, make it less verbose and generic-blog sounding

@@ -5,6 +5,107 @@ import { FullSlug } from "./path"
 // Check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined'
 
+// Simple sentiment lexicon for basic sentiment analysis
+const SENTIMENT_LEXICON = {
+  // Positive words
+  amazing: 1.0, awesome: 1.0, excellent: 1.0, fantastic: 1.0, great: 0.8, good: 0.6, 
+  wonderful: 1.0, beautiful: 0.8, brilliant: 1.0, perfect: 1.0, outstanding: 1.0,
+  impressive: 0.8, inspiring: 0.8, innovative: 0.8, creative: 0.6, fascinating: 0.8,
+  interesting: 0.6, promising: 0.6, successful: 0.8, effective: 0.6, powerful: 0.8,
+  valuable: 0.6, useful: 0.6, helpful: 0.6, clear: 0.4, elegant: 0.8, sophisticated: 0.6,
+  love: 0.8, like: 0.4, enjoy: 0.6, excited: 0.8, happy: 0.8, pleased: 0.6,
+  
+  // Negative words
+  terrible: -1.0, awful: -1.0, horrible: -1.0, bad: -0.6, poor: -0.6, worst: -1.0,
+  disappointing: -0.8, frustrating: -0.8, annoying: -0.6, confusing: -0.4, difficult: -0.4,
+  challenging: -0.2, problematic: -0.6, complicated: -0.4, unclear: -0.4, messy: -0.6,
+  broken: -0.8, failed: -0.8, wrong: -0.6, missing: -0.4, incomplete: -0.4,
+  hate: -0.8, dislike: -0.4, boring: -0.6, slow: -0.4, weak: -0.4, limited: -0.4,
+  
+  // Neutral/objective words that might indicate lower subjectivity
+  research: 0.0, study: 0.0, analysis: 0.0, method: 0.0, approach: 0.0, system: 0.0,
+  process: 0.0, technique: 0.0, algorithm: 0.0, framework: 0.0, model: 0.0, data: 0.0,
+}
+
+class SentimentAnalyzer {
+  analyzeSentiment(text: string): {
+    polarity: number
+    subjectivity: number
+    emotion: string
+    confidence: number
+  } {
+    const words = text.toLowerCase().split(/\s+/)
+    const sentimentScores: number[] = []
+    const subjectivityIndicators: number[] = []
+    
+    for (const word of words) {
+      const cleanWord = word.replace(/[^\w]/g, '')
+      if (SENTIMENT_LEXICON.hasOwnProperty(cleanWord)) {
+        const score = SENTIMENT_LEXICON[cleanWord as keyof typeof SENTIMENT_LEXICON]
+        sentimentScores.push(score)
+        
+        // Higher absolute values indicate more subjectivity
+        subjectivityIndicators.push(Math.abs(score))
+      }
+    }
+    
+    // Calculate polarity (average sentiment)
+    const polarity = sentimentScores.length > 0 
+      ? sentimentScores.reduce((sum, score) => sum + score, 0) / sentimentScores.length
+      : 0
+    
+    // Calculate subjectivity (presence of emotional language)
+    const subjectivity = subjectivityIndicators.length > 0
+      ? Math.min(subjectivityIndicators.reduce((sum, score) => sum + score, 0) / words.length, 1.0)
+      : 0
+    
+    // Determine dominant emotion
+    let emotion: string
+    if (polarity > 0.2) {
+      emotion = 'positive'
+    } else if (polarity < -0.2) {
+      emotion = 'negative'
+    } else {
+      emotion = 'neutral'
+    }
+    
+    // Calculate confidence based on number of sentiment words found
+    const confidence = Math.min(sentimentScores.length / Math.max(words.length * 0.1, 1), 1.0)
+    
+    return {
+      polarity: Math.max(-1, Math.min(1, polarity)),
+      subjectivity: Math.max(0, Math.min(1, subjectivity)),
+      emotion,
+      confidence
+    }
+  }
+  
+  calculateSentimentAlignment(
+    sentiment1: NonNullable<SemanticEmbedding['sentiment']>,
+    sentiment2: NonNullable<SemanticEmbedding['sentiment']>
+  ): { polarityDiff: number; emotionMatch: boolean; compatibility: number } {
+    const polarityDiff = sentiment1.polarity - sentiment2.polarity
+    const emotionMatch = sentiment1.emotion === sentiment2.emotion
+    
+    // Calculate compatibility: higher when polarities are close and emotions match
+    let compatibility = 1 - Math.abs(polarityDiff) / 2 // 0 to 1 based on polarity difference
+    
+    if (emotionMatch) {
+      compatibility *= 1.2 // Boost for matching emotions
+    }
+    
+    // Consider confidence - lower compatibility if either has low confidence
+    const avgConfidence = (sentiment1.confidence + sentiment2.confidence) / 2
+    compatibility *= avgConfidence
+    
+    return {
+      polarityDiff,
+      emotionMatch,
+      compatibility: Math.max(0, Math.min(1, compatibility))
+    }
+  }
+}
+
 export interface SemanticEmbedding {
   slug: FullSlug
   embedding: number[]
@@ -12,6 +113,12 @@ export interface SemanticEmbedding {
   title: string
   tags: string[]
   lastUpdated: Date
+  sentiment?: {
+    polarity: number      // -1 to 1, where -1 is very negative, 1 is very positive
+    subjectivity: number  // 0 to 1, where 0 is objective, 1 is subjective
+    emotion: string       // dominant emotion: positive, negative, neutral
+    confidence: number    // 0 to 1, confidence in sentiment analysis
+  }
 }
 
 export interface SemanticLink {
@@ -20,6 +127,11 @@ export interface SemanticLink {
   confidence: number
   type: "semantic" | "tag-based" | "explicit"
   explanation?: string
+  sentimentAlignment?: {
+    polarityDiff: number    // difference in polarity (-2 to 2)
+    emotionMatch: boolean   // whether emotions match
+    compatibility: number  // 0 to 1, how well sentiments align
+  }
 }
 
 export interface CrossReferenceStrength {
@@ -32,6 +144,7 @@ export interface CrossReferenceStrength {
     sharedTags: number
     contentOverlap: number
     linkFrequency: number
+    sentimentAlignment?: number
   }
 }
 
@@ -39,6 +152,7 @@ export class SemanticAnalyzer {
   private model: use.UniversalSentenceEncoder | null = null
   private embeddingCache: Map<string, SemanticEmbedding> = new Map()
   private initialized = false
+  private sentimentAnalyzer = new SentimentAnalyzer()
 
   async initialize(): Promise<void> {
     if (this.initialized) return
@@ -61,15 +175,22 @@ export class SemanticAnalyzer {
   }
 
   async generateEmbedding(content: string, title: string, tags: string[], slug: FullSlug): Promise<SemanticEmbedding> {
-    // Skip during build time in Node.js environment
+    // Combine title, content, and tags for comprehensive embedding
+    const combinedText = this.prepareTextForEmbedding(title, content, tags)
+    
+    // Analyze sentiment for all content (works in both browser and Node.js)
+    const sentiment = this.sentimentAnalyzer.analyzeSentiment(combinedText)
+    
+    // Skip semantic embedding during build time in Node.js environment
     if (!isBrowser) {
       return {
         slug,
         embedding: new Array(512).fill(0), // Placeholder embedding
-        content: this.prepareTextForEmbedding(title, content, tags),
+        content: combinedText,
         title,
         tags,
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
+        sentiment
       }
     }
     
@@ -82,9 +203,6 @@ export class SemanticAnalyzer {
     if (this.embeddingCache.has(cacheKey)) {
       return this.embeddingCache.get(cacheKey)!
     }
-
-    // Combine title, content, and tags for comprehensive embedding
-    const combinedText = this.prepareTextForEmbedding(title, content, tags)
     
     try {
       const embeddings = await this.model.embed([combinedText])
@@ -100,7 +218,8 @@ export class SemanticAnalyzer {
         content: combinedText,
         title,
         tags,
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
+        sentiment
       }
       
       this.embeddingCache.set(cacheKey, semanticEmbedding)
@@ -136,6 +255,53 @@ export class SemanticAnalyzer {
     return dotProduct / (norm1 * norm2)
   }
 
+  calculateSentimentAwareSimilarity(
+    source: SemanticEmbedding,
+    target: SemanticEmbedding,
+    options: {
+      sentimentWeight?: number // 0 to 1, how much to weight sentiment vs semantic similarity
+      preferSameEmotion?: boolean // boost links with same emotion
+      polarityTolerance?: number // 0 to 2, how different polarities can be
+    } = {}
+  ): number {
+    const {
+      sentimentWeight = 0.3,
+      preferSameEmotion = true,
+      polarityTolerance = 1.0
+    } = options
+    
+    // Base semantic similarity
+    const semanticSimilarity = this.calculateCosineSimilarity(source.embedding, target.embedding)
+    
+    // If no sentiment data, return just semantic similarity
+    if (!source.sentiment || !target.sentiment) {
+      return semanticSimilarity
+    }
+    
+    // Calculate sentiment compatibility
+    const sentimentAlignment = this.sentimentAnalyzer.calculateSentimentAlignment(source.sentiment, target.sentiment)
+    
+    // Apply polarity tolerance filter
+    if (Math.abs(sentimentAlignment.polarityDiff) > polarityTolerance) {
+      // Reduce similarity for very different polarities
+      return semanticSimilarity * 0.7
+    }
+    
+    // Boost for same emotion if preferred
+    let emotionBoost = 1.0
+    if (preferSameEmotion && sentimentAlignment.emotionMatch) {
+      emotionBoost = 1.2
+    }
+    
+    // Combine semantic and sentiment similarities
+    const combinedSimilarity = (
+      semanticSimilarity * (1 - sentimentWeight) +
+      sentimentAlignment.compatibility * sentimentWeight
+    ) * emotionBoost
+    
+    return Math.min(combinedSimilarity, 1.0)
+  }
+
   suggestSemanticLinks(
     sourceEmbedding: SemanticEmbedding,
     allEmbeddings: SemanticEmbedding[],
@@ -143,12 +309,20 @@ export class SemanticAnalyzer {
       minSimilarity?: number
       maxSuggestions?: number
       excludeSelf?: boolean
+      useSentimentAwareSimilarity?: boolean
+      sentimentWeight?: number
+      preferSameEmotion?: boolean
+      polarityTolerance?: number
     } = {}
   ): SemanticLink[] {
     const {
       minSimilarity = 0.3,
       maxSuggestions = 10,
-      excludeSelf = true
+      excludeSelf = true,
+      useSentimentAwareSimilarity = false,
+      sentimentWeight = 0.3,
+      preferSameEmotion = true,
+      polarityTolerance = 1.0
     } = options
 
     const suggestions: SemanticLink[] = []
@@ -158,10 +332,13 @@ export class SemanticAnalyzer {
         continue
       }
 
-      const similarity = this.calculateCosineSimilarity(
-        sourceEmbedding.embedding,
-        targetEmbedding.embedding
-      )
+      const similarity = useSentimentAwareSimilarity 
+        ? this.calculateSentimentAwareSimilarity(sourceEmbedding, targetEmbedding, {
+            sentimentWeight,
+            preferSameEmotion,
+            polarityTolerance
+          })
+        : this.calculateCosineSimilarity(sourceEmbedding.embedding, targetEmbedding.embedding)
 
       if (similarity >= minSimilarity) {
         const link: SemanticLink = {
@@ -169,7 +346,8 @@ export class SemanticAnalyzer {
           strength: similarity,
           confidence: this.calculateConfidence(similarity, sourceEmbedding, targetEmbedding),
           type: this.determineSemanticLinkType(sourceEmbedding, targetEmbedding),
-          explanation: this.generateLinkExplanation(sourceEmbedding, targetEmbedding, similarity)
+          explanation: this.generateLinkExplanation(sourceEmbedding, targetEmbedding, similarity),
+          sentimentAlignment: this.calculateSentimentAlignment(sourceEmbedding, targetEmbedding)
         }
 
         suggestions.push(link)
@@ -191,13 +369,21 @@ export class SemanticAnalyzer {
     const sharedTags = this.calculateSharedTagsScore(source.tags, target.tags)
     const contentOverlap = this.calculateContentOverlap(source.content, target.content)
     const linkFrequency = this.calculateLinkFrequency(source.slug, target.slug, existingLinks)
+    
+    // Calculate sentiment alignment if available
+    let sentimentAlignment = 0
+    if (source.sentiment && target.sentiment) {
+      const alignment = this.sentimentAnalyzer.calculateSentimentAlignment(source.sentiment, target.sentiment)
+      sentimentAlignment = alignment.compatibility
+    }
 
-    // Weighted combination of factors
+    // Weighted combination of factors (adjust weights to include sentiment)
     const strength = (
-      semanticSimilarity * 0.5 +
+      semanticSimilarity * 0.4 +
       sharedTags * 0.2 +
       contentOverlap * 0.2 +
-      linkFrequency * 0.1
+      linkFrequency * 0.1 +
+      sentimentAlignment * 0.1
     )
 
     return {
@@ -209,7 +395,8 @@ export class SemanticAnalyzer {
         semanticSimilarity,
         sharedTags,
         contentOverlap,
-        linkFrequency
+        linkFrequency,
+        sentimentAlignment: sentimentAlignment > 0 ? sentimentAlignment : undefined
       }
     }
   }
@@ -292,6 +479,7 @@ export class SemanticAnalyzer {
     // - Higher similarity
     // - Shared tags
     // - Recent content
+    // - Sentiment alignment
     
     let confidence = similarity
     
@@ -304,6 +492,21 @@ export class SemanticAnalyzer {
     const daysSinceUpdate = (Date.now() - source.lastUpdated.getTime()) / (1000 * 60 * 60 * 24)
     if (daysSinceUpdate < 30) {
       confidence *= 1.1
+    }
+    
+    // Factor in sentiment alignment
+    if (source.sentiment && target.sentiment) {
+      const sentimentAlignment = this.sentimentAnalyzer.calculateSentimentAlignment(source.sentiment, target.sentiment)
+      
+      // Boost confidence for good sentiment compatibility
+      if (sentimentAlignment.compatibility > 0.7) {
+        confidence *= 1.15
+      }
+      
+      // Slight boost for emotion matches, even if polarity differs
+      if (sentimentAlignment.emotionMatch) {
+        confidence *= 1.05
+      }
     }
     
     return Math.min(confidence, 1.0)
@@ -328,12 +531,25 @@ export class SemanticAnalyzer {
     similarity: number
   ): string {
     const sharedTags = source.tags.filter(tag => target.tags.includes(tag))
+    let explanation = ""
     
     if (sharedTags.length > 0) {
-      return `Shares tags: ${sharedTags.join(", ")} (${(similarity * 100).toFixed(1)}% similarity)`
+      explanation = `Shares tags: ${sharedTags.join(", ")} (${(similarity * 100).toFixed(1)}% similarity)`
+    } else {
+      explanation = `Semantically similar content (${(similarity * 100).toFixed(1)}% similarity)`
     }
     
-    return `Semantically similar content (${(similarity * 100).toFixed(1)}% similarity)`
+    // Add sentiment information if available
+    if (source.sentiment && target.sentiment) {
+      const sentimentAlignment = this.sentimentAnalyzer.calculateSentimentAlignment(source.sentiment, target.sentiment)
+      if (sentimentAlignment.emotionMatch) {
+        explanation += ` • Similar ${source.sentiment.emotion} sentiment`
+      } else {
+        explanation += ` • Contrasting sentiments (${source.sentiment.emotion} vs ${target.sentiment.emotion})`
+      }
+    }
+    
+    return explanation
   }
 
   private hashContent(content: string): string {
@@ -353,6 +569,17 @@ export class SemanticAnalyzer {
 
   getCacheSize(): number {
     return this.embeddingCache.size
+  }
+
+  private calculateSentimentAlignment(
+    source: SemanticEmbedding,
+    target: SemanticEmbedding
+  ): { polarityDiff: number; emotionMatch: boolean; compatibility: number } | undefined {
+    if (!source.sentiment || !target.sentiment) {
+      return undefined
+    }
+    
+    return this.sentimentAnalyzer.calculateSentimentAlignment(source.sentiment, target.sentiment)
   }
 }
 
