@@ -26,6 +26,8 @@ import ConditionalRender from "./ConditionalRender"
 import HomePageLinks from "./HomePageLinks"
 import TwoColumnNotes from "./TwoColumnNotes"
 import SemanticLinks from "./SemanticLinks"
+import LeftSidebarTabs from "./LeftSidebarTabs"
+import RightSidebarTabs from "./RightSidebarTabs"
 
 export {
   ArticleTitle,
@@ -56,4 +58,6 @@ export {
   HomePageLinks,
   TwoColumnNotes,
   SemanticLinks,
+  LeftSidebarTabs,
+  RightSidebarTabs,
 }
