@@ -36,11 +36,17 @@ type NodeData = {
 type SimpleLinkData = {
   source: SimpleSlug
   target: SimpleSlug
+  strength?: number
+  type?: "explicit" | "semantic" | "tag-based"
+  confidence?: number
 }
 
 type LinkData = {
   source: NodeData
   target: NodeData
+  strength?: number
+  type?: "explicit" | "semantic" | "tag-based"
+  confidence?: number
 } & SimulationLinkDatum<NodeData>
 
 type LinkRenderData = GraphicsInfo & {
@@ -127,9 +133,31 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   for (const [source, details] of data.entries()) {
     const outgoing = details.links ?? []
 
+    // Add explicit links
     for (const dest of outgoing) {
       if (validLinks.has(dest)) {
-        links.push({ source: source, target: dest })
+        links.push({ 
+          source: source, 
+          target: dest,
+          strength: 1.0,
+          type: "explicit"
+        })
+      }
+    }
+
+    // Add semantic links if available
+    if (details.semanticLinks) {
+      for (const semanticLink of details.semanticLinks) {
+        const target = simplifySlug(semanticLink.target)
+        if (validLinks.has(target) && !outgoing.includes(target)) {
+          links.push({
+            source: source,
+            target: target,
+            strength: semanticLink.strength,
+            type: semanticLink.type,
+            confidence: semanticLink.confidence
+          })
+        }
       }
     }
 
@@ -141,7 +169,12 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       tags.push(...localTags.filter((tag) => !tags.includes(tag)))
 
       for (const tag of localTags) {
-        links.push({ source: source, target: tag })
+        links.push({ 
+          source: source, 
+          target: tag,
+          strength: 0.5,
+          type: "tag-based"
+        })
       }
     }
   }
@@ -182,6 +215,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       .map((l) => ({
         source: nodes.find((n) => n.id === l.source)!,
         target: nodes.find((n) => n.id === l.target)!,
+        strength: l.strength ?? 1.0,
+        type: l.type ?? "explicit",
+        confidence: l.confidence
       })),
   }
 
@@ -286,7 +322,28 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
         alpha = l.active ? 1 : 0.2
       }
 
-      l.color = l.active ? computedStyleMap["--gray"] : computedStyleMap["--lightgray"]
+      // Color based on link type and strength
+      const linkType = l.simulationData.type || "explicit"
+      const strength = l.simulationData.strength || 1.0
+      
+      let color: string
+      if (linkType === "explicit") {
+        color = l.active ? computedStyleMap["--gray"] : computedStyleMap["--lightgray"]
+      } else if (linkType === "semantic") {
+        // Semantic links use a blue-tinted color, intensity based on strength
+        const baseColor = l.active ? computedStyleMap["--secondary"] : computedStyleMap["--tertiary"]
+        color = baseColor
+        alpha *= Math.max(strength, 0.4) // Ensure minimum visibility
+      } else if (linkType === "tag-based") {
+        // Tag-based links use a green-tinted color
+        const baseColor = l.active ? computedStyleMap["--tertiary"] : computedStyleMap["--lightgray"]
+        color = baseColor
+        alpha *= 0.8
+      } else {
+        color = l.active ? computedStyleMap["--gray"] : computedStyleMap["--lightgray"]
+      }
+
+      l.color = color
       tweenGroup.add(new Tweened<LinkRenderData>(l).to({ alpha }, 200))
     }
 
@@ -564,9 +621,26 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       const linkData = l.simulationData
       l.gfx.clear()
       l.gfx.moveTo(linkData.source.x! + width / 2, linkData.source.y! + height / 2)
+      
+      // Calculate line width based on strength
+      const strength = linkData.strength || 1.0
+      const linkType = linkData.type || "explicit"
+      
+      let lineWidth: number
+      if (linkType === "explicit") {
+        lineWidth = 1.5
+      } else if (linkType === "semantic") {
+        // Semantic links have variable thickness based on strength
+        lineWidth = 0.5 + (strength * 2) // Range: 0.5 to 2.5
+      } else if (linkType === "tag-based") {
+        lineWidth = 1
+      } else {
+        lineWidth = 1
+      }
+      
       l.gfx
         .lineTo(linkData.target.x! + width / 2, linkData.target.y! + height / 2)
-        .stroke({ alpha: l.alpha, width: 1, color: l.color })
+        .stroke({ alpha: l.alpha, width: lineWidth, color: l.color })
     }
 
     tweens.forEach((t) => t.update(time))
