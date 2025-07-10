@@ -24,12 +24,14 @@
       background: var(--light);
       
       .canvas-node {
+        fill: var(--light);
+        stroke: var(--lightgray);
         transition: all 0.3s ease;
         cursor: pointer;
         
         &:hover {
           stroke: var(--secondary);
-          stroke-width: 2;
+          stroke-width: 3;
           filter: brightness(1.05);
         }
       }
@@ -107,20 +109,5 @@
   }
 }
 
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-  .canvas-viewer {
-    .canvas-container {
-      .canvas-svg {
-        .canvas-node {
-          fill: var(--dark);
-          stroke: var(--lightgray);
-        }
-        
-        .canvas-node-content {
-          color: var(--light);
-        }
-      }
-    }
-  }
-}
+// The canvas nodes should automatically adapt to the theme through CSS custom properties
+// No separate dark mode media query needed since we're using CSS variables
