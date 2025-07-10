@@ -70,15 +70,10 @@ export const Canvas: QuartzTransformerPlugin<Options> = (userOpts?: Partial<Opti
                   path.resolve('content/media', path.basename(node.url))
                 ]
                 
-                console.log(`Processing canvas link: ${node.url}`)
-                console.log(`Possible paths:`, possiblePaths)
-                
                 for (const tryPath of possiblePaths) {
                   try {
-                    console.log(`Trying path: ${tryPath}`)
                     const canvasContent = readFileSync(tryPath, 'utf8')
                     const canvasData = JSON.parse(canvasContent)
-                    console.log(`Successfully loaded canvas from: ${tryPath}`)
                     
                     // Create a canvas embed node
                     const canvasEmbed = {
