@@ -9,10 +9,10 @@ tags: []
 [[AI Semantic Links]]
 [[Book Arts]]
 [[Build Birmingham]]
-[[Canvas-Demo]]
 [[My Art]]
 [[PhD]]
 [[Publications]]
+[[Ritual - Essential Grimoire]]
 [[index]]
 
 </div>

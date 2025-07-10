@@ -16,7 +16,8 @@ Unlike typical grimoires filled with elaborate ceremonies, this is refreshingly 
 The authors present magick not as mystical fantasy, but as "spiritual science"—systematic methods for working with the subtle energies that surround us. Their approach bridges ancient wisdom with modern psychological understanding, making these practices accessible to complete beginners while offering depth for experienced practitioners.
 
 ![Map Canvas](./media/map.json) 
-## Six Progressive Sections
+## ![[ritual-grimoire.canvas]]
+Six Progressive Sections
 
 The book builds systematically from basic energy work to advanced manifestation:
 
