@@ -1,0 +1,223 @@
+{
+  "nodes": [
+    {
+      "id": "central",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 300,
+      "height": 120,
+      "text": "# RITUAL: An Essential Grimoire\n\n**Core Philosophy**: Magick as Spiritual Science\n**Goal**: The Great Work - Spiritual Evolution\n**Method**: Working with Subtle Energy Across Multiple Reality Planes"
+    },
+    {
+      "id": "philosophy",
+      "type": "text",
+      "x": -400,
+      "y": -300,
+      "width": 280,
+      "height": 200,
+      "text": "## Core Philosophy\n\n- **Ritual as Human Need**: Marking transitions & profound experiences\n- **Multiple Reality Planes**: Physical, Etheric, Astral, Mental, Spiritual\n- **Energy Never Personal**: Draw from infinite universal source\n- **As Above, So Below**: Patterns repeat at all scales"
+    },
+    {
+      "id": "part1",
+      "type": "text",
+      "x": 400,
+      "y": -400,
+      "width": 280,
+      "height": 220,
+      "text": "## Part 1: Working with Energy\n\n**Foundation Skills**:\n- Nourishing the Aura (Golden Sphere)\n- Fourfold Breath with Seasons\n- Tree of Life Energizing\n- Angelic Energy (4 Archangels)\n- Energy Circulation with Others\n- Drawing from Places & Trees"
+    },
+    {
+      "id": "part2",
+      "type": "text",
+      "x": 600,
+      "y": -100,
+      "width": 280,
+      "height": 200,
+      "text": "## Part 2: Grounding & Purification\n\n**Energetic Hygiene**:\n- Literal Earth Grounding\n- Vacuum Technique\n- Water-Based Cleansing\n- Room/Space Clearing\n- Cord Cutting (Archangel Michael)\n- Crystal & Stone Purification"
+    },
+    {
+      "id": "part3",
+      "type": "text",
+      "x": 400,
+      "y": 200,
+      "width": 280,
+      "height": 220,
+      "text": "## Part 3: Centering & Balance\n\n**Present-Moment Mastery**:\n- Sleep Rituals & Dream Work\n- Essential Oil Alchemy\n- Resolving Resentment\n- Inner Knowing (Red/Green Light)\n- Grief Processing\n- Windows of Heaven Meditation"
+    },
+    {
+      "id": "part4",
+      "type": "text",
+      "x": 0,
+      "y": 400,
+      "width": 280,
+      "height": 200,
+      "text": "## Part 4: Shielding & Protection\n\n**Energetic Boundaries**:\n- Sphere of Light Shield\n- Aura Shield Enhancement\n- Selective Shielding (Love/Abundance)\n- Invisibility Techniques\n- Object Protection\n- Group & Space Shielding"
+    },
+    {
+      "id": "part5",
+      "type": "text",
+      "x": -400,
+      "y": 200,
+      "width": 280,
+      "height": 220,
+      "text": "## Part 5: Directing & Charging\n\n**Active Energy Work**:\n- Bolts of Light (Healing Others)\n- Charging Water & Food\n- Pain Relief Techniques\n- Candle & Moon Charging\n- Plant Alchemy (Tinctures)\n- Sigil Creation\n- Ritual Object Development"
+    },
+    {
+      "id": "part6",
+      "type": "text",
+      "x": -600,
+      "y": -100,
+      "width": 280,
+      "height": 200,
+      "text": "## Part 6: Manifestation & Mastery\n\n**Advanced Practice**:\n- Thoughts & Words as Creative Force\n- Sleep Programming\n- Child Mind Recovery\n- Healing Lack Consciousness\n- Time Management as Practice\n- Path of Development (Neophyte→Adept→Master)"
+    },
+    {
+      "id": "practical",
+      "type": "text",
+      "x": -200,
+      "y": -500,
+      "width": 280,
+      "height": 180,
+      "text": "## Practical Integration\n\n**Daily Practice**:\n- Morning energy nourishment\n- Regular grounding\n- Evening purification\n- Consistent sleep rituals\n- Present-moment centering\n- Protection as needed"
+    },
+    {
+      "id": "applications",
+      "type": "text",
+      "x": 200,
+      "y": -500,
+      "width": 280,
+      "height": 180,
+      "text": "## Real-World Applications\n\n**Prison-Tested Methods**:\n- Trauma healing\n- Relationship repair\n- Anxiety management\n- Physical pain relief\n- Emotional regulation\n- Spiritual development"
+    },
+    {
+      "id": "levels",
+      "type": "text",
+      "x": -800,
+      "y": 0,
+      "width": 250,
+      "height": 300,
+      "text": "## Reality Levels\n\n**5 Planes of Existence**:\n\n1. **Physical**: Material world, body\n2. **Etheric**: Chi/energy, elemental work\n3. **Astral**: Emotions, planetary energies\n4. **Mental**: Abstract concepts, Tree of Life\n5. **Spiritual**: Divine consciousness, ultimate reality\n\n*Work moves from dense to subtle*"
+    },
+    {
+      "id": "development",
+      "type": "text",
+      "x": 800,
+      "y": 0,
+      "width": 250,
+      "height": 300,
+      "text": "## Development Stages\n\n**Traditional Progression**:\n\n1. **Neophyte**: Learning basics, energy sensitivity\n2. **Adept**: Mastery of techniques, teaching others\n3. **Master**: Complete integration, transcendence\n\n**Skills Build Progressively**:\n- Energy → Grounding → Centering\n- Protection → Direction → Manifestation"
+    },
+    {
+      "id": "tools",
+      "type": "text",
+      "x": 0,
+      "y": -700,
+      "width": 300,
+      "height": 150,
+      "text": "## Tools & Correspondences\n\n**Elements**: Air (East), Fire (South), Water (West), Earth (North)\n**Archangels**: Raphael, Michael, Gabriel, Uriel\n**Colors**: Correspond to energies & intentions\n**Crystals**: Store & amplify energy\n**Planets**: Specific energy signatures"
+    },
+    {
+      "id": "personal",
+      "type": "text",
+      "x": 0,
+      "y": 600,
+      "width": 300,
+      "height": 150,
+      "text": "## Personal Journey\n\n**Authors' Story**:\n- 18 years death row survival\n- Relationship near-destruction\n- PTSD & trauma healing\n- Ritual as salvation\n- Joy in every moment\n- Teaching through example"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge1",
+      "fromNode": "central",
+      "toNode": "philosophy",
+      "color": "#ff6b6b",
+      "label": "Foundation"
+    },
+    {
+      "id": "edge2",
+      "fromNode": "central",
+      "toNode": "part1",
+      "color": "#4ecdc4",
+      "label": "Energy Basics"
+    },
+    {
+      "id": "edge3",
+      "fromNode": "part1",
+      "toNode": "part2",
+      "color": "#45b7d1",
+      "label": "Progressive Skills"
+    },
+    {
+      "id": "edge4",
+      "fromNode": "part2",
+      "toNode": "part3",
+      "color": "#96ceb4",
+      "label": "Building Mastery"
+    },
+    {
+      "id": "edge5",
+      "fromNode": "part3",
+      "toNode": "part4",
+      "color": "#ffd93d",
+      "label": "Protection & Balance"
+    },
+    {
+      "id": "edge6",
+      "fromNode": "part4",
+      "toNode": "part5",
+      "color": "#ff9ff3",
+      "label": "Active Work"
+    },
+    {
+      "id": "edge7",
+      "fromNode": "part5",
+      "toNode": "part6",
+      "color": "#ff7675",
+      "label": "Mastery"
+    },
+    {
+      "id": "edge8",
+      "fromNode": "central",
+      "toNode": "practical",
+      "color": "#6c5ce7",
+      "label": "Daily Life"
+    },
+    {
+      "id": "edge9",
+      "fromNode": "central",
+      "toNode": "applications",
+      "color": "#a29bfe",
+      "label": "Real Results"
+    },
+    {
+      "id": "edge10",
+      "fromNode": "philosophy",
+      "toNode": "levels",
+      "color": "#fd79a8",
+      "label": "Cosmology"
+    },
+    {
+      "id": "edge11",
+      "fromNode": "part6",
+      "toNode": "development",
+      "color": "#00b894",
+      "label": "Long-term Path"
+    },
+    {
+      "id": "edge12",
+      "fromNode": "central",
+      "toNode": "tools",
+      "color": "#orange",
+      "label": "Resources"
+    },
+    {
+      "id": "edge13",
+      "fromNode": "central",
+      "toNode": "personal",
+      "color": "#e17055",
+      "label": "Living Example"
+    }
+  ]
+}
