@@ -28,6 +28,10 @@ import TwoColumnNotes from "./TwoColumnNotes"
 import SemanticLinks from "./SemanticLinks"
 import LeftSidebarTabs from "./LeftSidebarTabs"
 import RightSidebarTabs from "./RightSidebarTabs"
+import HomepageBio from "./HomepageBio"
+import FeaturedContent from "./FeaturedContent"
+import ReadingProgress from "./ReadingProgress"
+import ReadingTime from "./ReadingTime"
 
 export {
   ArticleTitle,
@@ -60,4 +64,8 @@ export {
   SemanticLinks,
   LeftSidebarTabs,
   RightSidebarTabs,
+  HomepageBio,
+  FeaturedContent,
+  ReadingProgress,
+  ReadingTime,
 }

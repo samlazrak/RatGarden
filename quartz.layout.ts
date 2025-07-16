@@ -1,16 +1,43 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
+import { getSemanticLinkComponentConfig } from "./quartz/plugins/emitters/semanticLinkConfig"
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
-  header: [],
+  header: [
+    Component.ConditionalRender({
+      component: Component.ReadingProgress({
+        showProgressBar: true,
+        showReadingTime: true,
+        showTimeRemaining: true,
+        wordsPerMinute: 200,
+        position: "top",
+        showOnlyOnLongContent: true,
+        minWordsForDisplay: 300,
+      }),
+      condition: (page) => page.fileData.slug !== "index" && !page.fileData.slug?.endsWith("/index"),
+    }),
+  ],
   afterBody: [
     Component.ConditionalRender({
-      component: Component.TwoColumnNotes({
-        title: "Random Notes",
-        limit: 5,
+      component: Component.HomepageBio({
+        showAvatar: true,
+        showSocialLinks: true,
+        showCurrentFocus: true,
+        showQuickLinks: true,
+      }),
+      condition: (page) => page.fileData.slug === "index",
+    }),
+    Component.ConditionalRender({
+      component: Component.FeaturedContent({
+        title: "Featured Content",
+        limit: 6,
+        showDescription: true,
+        showDate: true,
         showTags: true,
+        featuredSlugs: ["research/PhD", "research/Publications", "art/My-Art", "art/Book-Arts", "projects/Build-Birmingham", "tools/AI-Semantic-Links"],
+        autoFeatured: true,
       }),
       condition: (page) => page.fileData.slug === "index",
     }),
@@ -50,7 +77,7 @@ export const defaultContentPageLayout: PageLayout = {
       defaultTab: "explorer"
     })),
     Component.MobileOnly(Component.Explorer({
-      title: "Explorer",
+      title: "Explore",
       folderClickBehavior: "link",
       folderDefaultState: "collapsed",
       useSavedState: true,
@@ -88,14 +115,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ConditionalRender({
       component: Component.RightSidebarTabs({
         defaultTab: "related",
-        semanticLinksOptions: {
-          title: "Related Content",
-          maxSuggestions: 5,
-          minStrength: 0.1,
-          showStrength: true,
-          showConfidence: false,
-          showExplanation: true,
-        }
+        semanticLinksOptions: getSemanticLinkComponentConfig()
       }),
       condition: (page) => page.fileData.slug !== "index",
     }),

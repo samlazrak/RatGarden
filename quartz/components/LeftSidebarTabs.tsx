@@ -1,5 +1,4 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import TableOfContents from "./TableOfContents"
 import Explorer from "./Explorer"
 import leftSidebarTabsStyle from "./styles/leftSidebarTabs.scss"
 import script from "./scripts/sidebarTabs.inline"
@@ -21,9 +20,8 @@ export default ((opts?: Partial<Options>) => {
     allFiles, 
     ctx 
   }: QuartzComponentProps) => {
-    const TocComponent = TableOfContents()
     const ExplorerComponent = Explorer({
-      title: "Explorer",
+      title: "Explore",
       folderClickBehavior: "link",
       folderDefaultState: "collapsed",
       useSavedState: true,
@@ -50,23 +48,13 @@ export default ((opts?: Partial<Options>) => {
             data-tab="explorer"
             onclick="switchLeftTab('explorer')"
           >
-            📁 Explorer
-          </button>
-          <button 
-            class="tab-button" 
-            data-tab="toc"
-            onclick="switchLeftTab('toc')"
-          >
-            📋 Contents
+            📁 Explore
           </button>
         </div>
         
         <div class="tab-content">
           <div class="tab-panel active" data-panel="explorer">
             <ExplorerComponent displayClass={displayClass} fileData={fileData} allFiles={allFiles} ctx={ctx} />
-          </div>
-          <div class="tab-panel" data-panel="toc">
-            <TocComponent displayClass={displayClass} fileData={fileData} allFiles={allFiles} ctx={ctx} cfg={ctx.cfg.configuration} />
           </div>
         </div>
       </div>

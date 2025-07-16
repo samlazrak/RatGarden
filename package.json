@@ -22,7 +22,8 @@
     "kill": "lsof -ti:8080 | xargs kill -9",
     "build": "npx quartz build",
     "dev": "npm run generate-graph-links && npm run kill && npm run build && npx quartz build --serve",
-    "generate-graph-links": "node scripts/generate-graph-links.js"
+    "generate-graph-links": "node scripts/generate-graph-links.js",
+    "clear-semantic-cache": "node scripts/clear-semantic-cache.js"
   },
   "engines": {
     "npm": ">=10.9.2",

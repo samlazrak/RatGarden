@@ -1,5 +1,6 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
+import { getSemanticLinkPluginConfig } from "./quartz/plugins/emitters/semanticLinkConfig"
 
 /**
  * Quartz 4 Configuration
@@ -81,14 +82,7 @@ const config: QuartzConfig = {
       Plugin.ContentPage(),
       Plugin.FolderPage(),
       Plugin.TagPage(),
-      Plugin.SemanticLinkDiscovery({
-        enableSemanticLinks: true,
-        enableCrossReferenceStrength: true,
-        minSimilarity: 0.1,
-        maxSuggestedLinks: 8,
-        semanticLinkThreshold: 0.1,
-        cacheEmbeddings: true,
-      }),
+      Plugin.SemanticLinkDiscovery(getSemanticLinkPluginConfig()),
       Plugin.ContentIndex({
         enableSiteMap: true,
         enableRSS: true,
