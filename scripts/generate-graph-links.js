@@ -57,8 +57,11 @@ function addGraphLinksToIndex(filePath) {
 
 ${markdownFiles
   .map((filePath) => {
-    const fileName = path.basename(filePath, ".md")
-    return `[[${fileName}]]`
+    // Get relative path from content directory
+    const relativePath = path.relative(contentDir, filePath)
+    // Remove .md extension
+    const linkPath = relativePath.replace(/\.md$/, "")
+    return `[[${linkPath}]]`
   })
   .join("\n")}
 

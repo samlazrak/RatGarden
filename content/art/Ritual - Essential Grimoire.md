@@ -1,6 +1,7 @@
 ---
 title: Ritual - Essential Grimoire
 description: Demonstration of Obsidian Canvas display functionality
+draft: true
 tags:
   - canvas
   - demo

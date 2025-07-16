@@ -1,5 +1,6 @@
 import { QuartzEmitterPlugin } from "../types"
 import { semanticAnalyzer, SemanticEmbedding, SemanticLink } from "../../util/semantic"
+import { semanticCache } from "../../util/semanticCache"
 import { FilePath, FullSlug } from "../../util/path"
 import { BuildCtx } from "../../util/ctx"
 import { ProcessedContent } from "../vfile"
@@ -39,6 +40,17 @@ export const SemanticLinkDiscovery: QuartzEmitterPlugin<Partial<Options>> = (opt
       const isBrowser = typeof window !== 'undefined'
       
       try {
+        // Initialize cache if caching is enabled
+        if (options.cacheEmbeddings) {
+          await semanticCache.initialize()
+          
+          // Prune old cache entries periodically
+          await semanticCache.pruneCache()
+          
+          const stats = semanticCache.getCacheStats()
+          console.log(`Cache stats: ${stats.totalEntries} entries`)
+        }
+        
         // Initialize semantic analyzer
         await semanticAnalyzer.initialize()
         
@@ -50,12 +62,34 @@ export const SemanticLinkDiscovery: QuartzEmitterPlugin<Partial<Options>> = (opt
           const slug = file.data.slug as FullSlug
           const title = file.data.frontmatter?.title || "Untitled"
           const tags = file.data.frontmatter?.tags || []
-          const content = file.data.text || ""
+          const contentText = file.data.text || ""
           
           console.log(`Processing file for semantic analysis: ${slug}`)
           
           try {
-            const embedding = await semanticAnalyzer.generateEmbedding(content, title, tags, slug)
+            let embedding: SemanticEmbedding
+            let cachedEntry = null
+            
+            // Try to get from cache if enabled
+            if (options.cacheEmbeddings) {
+              cachedEntry = await semanticCache.getEmbedding(slug, contentText, title, tags)
+              if (cachedEntry) {
+                embedding = cachedEntry.embedding
+                // Update the lastUpdated date to current
+                embedding.lastUpdated = new Date()
+              }
+            }
+            
+            // Generate new embedding if not cached
+            if (!cachedEntry) {
+              embedding = await semanticAnalyzer.generateEmbedding(contentText, title, tags, slug)
+              
+              // Save to cache if enabled (we'll save semantic links later)
+              if (options.cacheEmbeddings) {
+                await semanticCache.saveEmbedding(slug, embedding)
+              }
+            }
+            
             allEmbeddings.push(embedding)
             
             // Store existing links for strength calculation
@@ -65,7 +99,7 @@ export const SemanticLinkDiscovery: QuartzEmitterPlugin<Partial<Options>> = (opt
             file.data.semanticEmbedding = embedding.embedding
             
             if (isBrowser) {
-              console.log(`Generated embedding for: ${slug}`)
+              console.log(`${cachedEntry ? "Loaded cached" : "Generated"} embedding for: ${slug}`)
             }
           } catch (error) {
             console.error(`Failed to generate embedding for ${slug}:`, error)
@@ -84,25 +118,53 @@ export const SemanticLinkDiscovery: QuartzEmitterPlugin<Partial<Options>> = (opt
           // Generate semantic link suggestions
           if (options.enableSemanticLinks) {
             let suggestions: SemanticLink[] = []
+            let fromCache = false
             
-            if (isBrowser) {
-              // Full semantic analysis in browser
-              suggestions = semanticAnalyzer.suggestSemanticLinks(
-                sourceEmbedding,
-                allEmbeddings,
-                {
-                  minSimilarity: options.minSimilarity,
-                  maxSuggestions: options.maxSuggestedLinks,
-                  excludeSelf: true
-                }
+            // Check if we have cached semantic links
+            if (options.cacheEmbeddings) {
+              const cachedEntry = await semanticCache.getEmbedding(
+                slug,
+                sourceEmbedding.content,
+                sourceEmbedding.title,
+                sourceEmbedding.tags
               )
-            } else {
-              // Fallback to tag-based suggestions during build
-              suggestions = generateTagBasedSuggestions(
-                sourceEmbedding,
-                allEmbeddings,
-                options.maxSuggestedLinks
-              )
+              
+              if (cachedEntry && cachedEntry.semanticLinks) {
+                suggestions = cachedEntry.semanticLinks
+                fromCache = true
+              }
+            }
+            
+            // Generate new suggestions if not cached
+            if (!fromCache) {
+              if (isBrowser) {
+                // Full semantic analysis in browser
+                suggestions = semanticAnalyzer.suggestSemanticLinks(
+                  sourceEmbedding,
+                  allEmbeddings,
+                  {
+                    minSimilarity: options.minSimilarity,
+                    maxSuggestions: options.maxSuggestedLinks,
+                    excludeSelf: true,
+                    useSentimentAwareSimilarity: true,
+                    sentimentWeight: 0.3,
+                    preferSameEmotion: true,
+                    polarityTolerance: 1.0
+                  }
+                )
+              } else {
+                // Fallback to tag-based suggestions during build
+                suggestions = generateTagBasedSuggestions(
+                  sourceEmbedding,
+                  allEmbeddings,
+                  options.maxSuggestedLinks
+                )
+              }
+              
+              // Save suggestions to cache if enabled
+              if (options.cacheEmbeddings && suggestions.length > 0) {
+                await semanticCache.saveEmbedding(slug, sourceEmbedding, suggestions)
+              }
             }
             
             // Filter suggestions above threshold
@@ -113,7 +175,7 @@ export const SemanticLinkDiscovery: QuartzEmitterPlugin<Partial<Options>> = (opt
             file.data.semanticLinks = filteredSuggestions
             
             if (filteredSuggestions.length > 0) {
-              console.log(`Generated ${filteredSuggestions.length} semantic links for: ${slug}`)
+              console.log(`${fromCache ? "Loaded cached" : "Generated"} ${filteredSuggestions.length} semantic links for: ${slug}`)
               console.log(`Semantic links for ${slug}:`, filteredSuggestions.map(s => `${s.target} (${s.strength.toFixed(2)})`))
               console.log(`Stored semantic links in file.data.semanticLinks:`, file.data.semanticLinks)
             }
