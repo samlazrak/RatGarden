@@ -1,6 +1,6 @@
-# CLAUDE.md
+# CURSOR.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Cursor AI when working with code in this repository.
 
 ## Project Overview
 
@@ -75,8 +75,23 @@ The site uses carefully configured plugins for:
 ## Writing Guidelines
 - When writing for blog posts, especially for the RatGarden website, make it less verbose and generic-blog sounding
 
-## Testing and Development Best Practices
-- **NEVER** attempt to test the application directly by running it and checking browser output
+## Cursor-Specific Guidelines
+
+### Code Generation Best Practices
+- **ALWAYS** use TypeScript with proper type annotations
+- **ALWAYS** follow the existing code style and patterns in the codebase
+- **ALWAYS** use Preact instead of React for new components
+- **ALWAYS** implement proper error boundaries for React/Preact components
+- **ALWAYS** use SCSS for styling with CSS custom properties
+- **ALWAYS** follow the existing component structure in `quartz/components/`
+
+### File Organization
+- **Components**: Place new components in `quartz/components/` with corresponding `.scss` files in `quartz/components/styles/`
+- **Scripts**: Place inline scripts in `quartz/components/scripts/`
+- **Content**: Add new content in appropriate subdirectories under `content/`
+- **Tests**: Place tests in `tests/` directory or alongside components with `.test.ts` extension
+
+### Testing and Development Best Practices
 - **ALWAYS** write unit tests first following Test-Driven Development (TDD) methodology
 - **ALWAYS** include comprehensive error handling with try-catch blocks
 - **ALWAYS** validate and sanitize all user inputs
@@ -91,3 +106,10 @@ The site uses carefully configured plugins for:
 - **ALWAYS** mock external dependencies and API calls in tests
 - **ALWAYS** ensure code has proper error recovery mechanisms
 - **NEVER** assume code works without tests - verify functionality through unit/integration tests
+
+### Cursor AI Features
+- **Use Chat**: Leverage Cursor's chat feature for complex refactoring and debugging
+- **Code Actions**: Use Cursor's code actions for quick fixes and improvements
+- **Multi-file Editing**: Take advantage of Cursor's ability to edit multiple files simultaneously
+- **Context Awareness**: Cursor understands the full codebase context, use this for better suggestions
+- **Terminal Integration**: Use Cursor's integrated terminal for running npm commands and tests 
