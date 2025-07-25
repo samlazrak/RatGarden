@@ -30,7 +30,7 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 - Use `npm run check` for type checking and formatting
 - Follow TDD methodology - write tests first
 - **Shell**: Using bash via runner.sh - always use `./runner.sh <command>` for terminal operations
-- **Output**: Check `runneroutput.log` for command results instead of terminal output
+- **Output**: Check `runneroutput.log` for command results instead of terminal output (automatically cleaned up after each command)
 
 ## Key Technologies
 
