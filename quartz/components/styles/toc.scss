@@ -13,6 +13,16 @@
   &:has(button.toc-header.collapsed) {
     max-height: auto;
   }
+  
+  @media all and ($mobile) {
+    margin: 0.75rem 0;
+    padding: 0.75rem;
+  }
+  
+  @media all and ($mobile-small) {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+  }
 }
 
 button.toc-header {
@@ -36,6 +46,19 @@ button.toc-header {
       content: "📋";
       margin-right: 0.5rem;
       font-size: 1rem;
+    }
+    
+    @media all and ($mobile) {
+      font-size: 1rem;
+    }
+    
+    @media all and ($mobile-small) {
+      font-size: 0.95rem;
+      
+      &::before {
+        font-size: 0.9rem;
+        margin-right: 0.4rem;
+      }
     }
   }
 
@@ -63,6 +86,14 @@ ul.toc-content.overflow {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--gray) var(--light);
+    
+    @media all and ($mobile) {
+      max-height: 300px; // Reduce max height on mobile
+    }
+    
+    @media all and ($mobile-small) {
+      max-height: 250px; // Even smaller on very small screens
+    }
     
     // Custom scrollbar for webkit browsers
     &::-webkit-scrollbar {

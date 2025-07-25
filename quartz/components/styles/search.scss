@@ -5,6 +5,12 @@
   max-width: 14rem;
   @media all and ($mobile) {
     flex-grow: 0.3;
+    min-width: 120px; // Ensure minimum usable width
+  }
+  
+  @media all and ($mobile-small) {
+    min-width: 100px;
+    max-width: 10rem;
   }
 
   & > .search-button {
@@ -67,6 +73,16 @@
       @media all and not ($desktop) {
         width: 90%;
       }
+      
+      @media all and ($mobile) {
+        width: 95%;
+        margin-top: 8vh; // Reduce top margin on mobile
+      }
+      
+      @media all and ($mobile-small) {
+        width: 98%;
+        margin-top: 5vh; // Even less top margin on very small screens
+      }
 
       & > * {
         width: 100%;
@@ -85,6 +101,16 @@
         color: var(--dark);
         font-size: 1.1em;
         border: 1px solid var(--lightgray);
+        
+        @media all and ($mobile) {
+          font-size: 1rem;
+          padding: 0.6em 0.8em;
+        }
+        
+        @media all and ($mobile-small) {
+          font-size: 0.95rem;
+          padding: 0.5em 0.6em;
+        }
 
         &:focus {
           outline: none;

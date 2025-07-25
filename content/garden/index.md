@@ -3,35 +3,45 @@ title: "The Garden"
 description: "Digital garden development and AI features showcase"
 ---
 
-<!-- Graph links - invisible but parsed by Quartz -->
-<div style="font-size: 0px; color: transparent; height: 0; overflow: hidden;">
+<!-- Quartz Graph Connectivity Links - Multiple Methods for Maximum Compatibility -->
 
-[[index]]
-[[tools/index]]
-[[tools/AI Semantic Links]]
-[[research/index]]
-[[research/ScribeAI-Clinical-Documentation]]
-[[research/Publications]]
-[[research/PhD]]
-[[projects/index]]
-[[projects/Build Birmingham]]
-[[garden/sanitization-system]]
-[[garden/index]]
-[[garden/ai-features-showcase]]
-[[drafts/WatchGuard-Waiting-Room-Intelligence]]
-[[drafts/MediSight-Clinical-Intelligence-Platform]]
-[[docs/ai-features-documentation]]
-[[demos/medical-citations-test]]
-[[demos/ai-interactive-demos]]
-[[blog/privacy-focused-analytics-implementation]]
-[[blog/nvidia-computer-vision-projects]]
-[[blog/clinical-note-templates-digital-implementation]]
-[[blog/ai-features-showcase]]
-[[art/index]]
-[[art/Ritual - Essential Grimoire]]
-[[art/My Art]]
+<!-- Method 1: Comment-based wikilinks -->
+<!-- [[art/My Art]] -->
+<!-- [[art/Ritual - Essential Grimoire]] -->
+<!-- [[art/index]] -->
+<!-- [[blog/ai-features-showcase]] -->
+<!-- [[blog/claude-autopilot-24-7-automated-development]] -->
+<!-- [[blog/clinical-note-templates-digital-implementation]] -->
+<!-- [[blog/nvidia-computer-vision-projects]] -->
+<!-- [[blog/privacy-focused-analytics-implementation]] -->
+<!-- [[demos/ai-interactive-demos]] -->
+<!-- [[demos/medical-citations-test]] -->
+<!-- [[docs/ai-features-documentation]] -->
+<!-- [[drafts/MediSight-Clinical-Intelligence-Platform]] -->
+<!-- [[drafts/WatchGuard-Waiting-Room-Intelligence]] -->
+<!-- [[garden/ai-features-showcase]] -->
+<!-- [[garden/sanitization-system]] -->
+<!-- [[index]] -->
+<!-- [[projects/Build Birmingham]] -->
+<!-- [[projects/index]] -->
+<!-- [[research/PhD]] -->
+<!-- [[research/Publications]] -->
+<!-- [[research/ScribeAI-Clinical-Documentation]] -->
+<!-- [[research/index]] -->
+<!-- [[tools/AI Semantic Links]] -->
+<!-- [[tools/index]] -->
 
+<!-- Method 2: Screen reader accessible but visually hidden -->
+<div aria-hidden="true" style="position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;">
+[[art/My Art]] [[art/Ritual - Essential Grimoire]] [[art/index]] [[blog/ai-features-showcase]] [[blog/claude-autopilot-24-7-automated-development]] [[blog/clinical-note-templates-digital-implementation]] [[blog/nvidia-computer-vision-projects]] [[blog/privacy-focused-analytics-implementation]] [[demos/ai-interactive-demos]] [[demos/medical-citations-test]] [[docs/ai-features-documentation]] [[drafts/MediSight-Clinical-Intelligence-Platform]] [[drafts/WatchGuard-Waiting-Room-Intelligence]] [[garden/ai-features-showcase]] [[garden/sanitization-system]] [[index]] [[projects/Build Birmingham]] [[projects/index]] [[research/PhD]] [[research/Publications]] [[research/ScribeAI-Clinical-Documentation]] [[research/index]] [[tools/AI Semantic Links]] [[tools/index]]
 </div>
+
+<!-- Method 3: Zero-width inline links -->
+<span style="display: none; visibility: hidden; position: absolute; left: -9999px;">
+[[art/My Art]]​[[art/Ritual - Essential Grimoire]]​[[art/index]]​[[blog/ai-features-showcase]]​[[blog/claude-autopilot-24-7-automated-development]]​[[blog/clinical-note-templates-digital-implementation]]​[[blog/nvidia-computer-vision-projects]]​[[blog/privacy-focused-analytics-implementation]]​[[demos/ai-interactive-demos]]​[[demos/medical-citations-test]]​[[docs/ai-features-documentation]]​[[drafts/MediSight-Clinical-Intelligence-Platform]]​[[drafts/WatchGuard-Waiting-Room-Intelligence]]​[[garden/ai-features-showcase]]​[[garden/sanitization-system]]​[[index]]​[[projects/Build Birmingham]]​[[projects/index]]​[[research/PhD]]​[[research/Publications]]​[[research/ScribeAI-Clinical-Documentation]]​[[research/index]]​[[tools/AI Semantic Links]]​[[tools/index]]
+</span>
+
+<!-- End Quartz Graph Connectivity -->
 
 # The Garden 🌿
 

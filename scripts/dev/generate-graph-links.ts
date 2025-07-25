@@ -93,40 +93,46 @@ export class GraphLinkGenerator {
 
   private generateGraphLinksSection(markdownFiles: string[]): string {
     const links = markdownFiles
+      .filter((filePath) => {
+        const relativePath = filePath.replace(this.config.contentDir, "").replace(/^\//, "")
+        // Skip the current index file to avoid self-reference
+        return !relativePath.endsWith("/index.md") || relativePath !== "index.md"
+      })
       .map((filePath) => {
         const relativePath = filePath.replace(this.config.contentDir, "").replace(/^\//, "")
         const linkPath = relativePath.replace(/\.md$/, "")
         return `[[${linkPath}]]`
       })
-      .join("\n")
+      .join(" ")
 
     return `<!-- Graph links - invisible but parsed by Quartz -->
-<div style="font-size: 0px; color: transparent; height: 0; overflow: hidden;">
+<div style="display: none;">
 
 ${links}
 
-</div>`
+</div>
+<!-- End graph links -->`
   }
 
   private updateExistingGraphLinks(content: string, newGraphLinksSection: string): string {
-    const beforeGraphLinks = content.substring(
-      0,
-      content.indexOf("<!-- Graph links - invisible but parsed by Quartz -->"),
-    )
-    const afterGraphLinks = content.substring(
-      content.indexOf(
-        "</div>",
-        content.indexOf("<!-- Graph links - invisible but parsed by Quartz -->"),
-      ) + 6,
-    )
-
-    const remainingFrontmatterEnd = beforeGraphLinks.indexOf("---", 3)
-    if (remainingFrontmatterEnd !== -1) {
-      const beforeFrontmatter = beforeGraphLinks.substring(0, remainingFrontmatterEnd + 3)
-      return beforeFrontmatter + "\n\n" + newGraphLinksSection + afterGraphLinks
-    } else {
-      return beforeGraphLinks + "\n\n" + newGraphLinksSection + afterGraphLinks
+    const startMarker = "<!-- Graph links - invisible but parsed by Quartz -->"
+    const endMarker = "<!-- End graph links -->"
+    
+    const startIndex = content.indexOf(startMarker)
+    const endIndex = content.indexOf(endMarker)
+    
+    if (startIndex === -1 || endIndex === -1) {
+      // Fallback to old method if markers not found
+      const beforeGraphLinks = content.substring(0, startIndex)
+      const afterIndex = content.indexOf("</div>", startIndex) + 6
+      const afterGraphLinks = content.substring(afterIndex)
+      return beforeGraphLinks + newGraphLinksSection + afterGraphLinks
     }
+    
+    const beforeGraphLinks = content.substring(0, startIndex)
+    const afterGraphLinks = content.substring(endIndex + endMarker.length)
+    
+    return beforeGraphLinks + newGraphLinksSection + afterGraphLinks
   }
 
   private insertNewGraphLinks(
