@@ -29,6 +29,8 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 - Use `npm run test` to run tests
 - Use `npm run check` for type checking and formatting
 - Follow TDD methodology - write tests first
+- **Shell**: Using bash via runner.sh - always use `./runner.sh <command>` for terminal operations
+- **Output**: Check `runneroutput.log` for command results instead of terminal output
 
 ## Key Technologies
 
@@ -44,6 +46,14 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 - Graph link generation runs before each build
 - Hot reload via WebSocket connections
 - Deployed at garden.samlazrak.com
+
+## Repository Management
+
+- **Private Repository**: Contains all content, build artifacts, and development files
+- **Public Repository**: Source code only - no content, no build artifacts, no private files
+- **Sanitization**: Use `npm run push-public` to sanitize and push to public repo
+- **Excluded from Public**: content/, public/, scripts/, docs/, tests/, .claude/, .vscode/, .github/, .quartz-cache/, runner.sh, runneroutput.log, CLAUDE.md, .cursorrules, vercel.json, system files, generic Quartz documentation
+- **Git LFS**: Large files (videos, images, JSON) are handled by Git LFS for faster pushes
 
 ## Testing Requirements
 

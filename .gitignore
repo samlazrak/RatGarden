@@ -77,3 +77,8 @@ node_modules/
 # Replit
 .replit
 replit.nix
+
+# Local development scripts
+runner.sh
+runneroutput.log
+*.log

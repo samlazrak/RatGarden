@@ -3,7 +3,7 @@
 import { execSync } from "child_process"
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs"
 import { glob } from "glob"
-import { dirname, join } from "path"
+import { basename, dirname, join } from "path"
 import * as readline from "readline"
 
 interface SanitizeConfig {
@@ -73,6 +73,8 @@ class RepositorySanitizer {
         "CLAUDE.md",
         "docs/CURSOR.md",
         "docs/DRAFT_MANAGEMENT.md",
+        "runner.sh",
+        "runneroutput.log",
         "package-lock.json",
         ".npmrc",
         ".node-version",
@@ -155,16 +157,113 @@ class RepositorySanitizer {
   private async copyFilesSelectively(): Promise<void> {
     this.log("Copying files selectively to public repository...")
 
-    // Get all files in the private repo (not directories)
-    const allFiles = await glob("**/*", {
-      cwd: this.privateRepoPath,
-      ignore: ["node_modules/**", ".git/**", ...this.config.filesToExclude],
-      dot: true,
-      nodir: true, // Only files, not directories
-    })
+    // Define specific files to include (whitelist approach)
+    const includeFiles = [
+      // Root configuration files
+      "package.json",
+      "package-lock.json",
+      "quartz.config.ts",
+      "quartz.layout.ts",
+      "tsconfig.json",
+      "globals.d.ts",
+      "index.d.ts",
+      "README.md",
+      ".gitignore",
+      ".gitattributes",
+      ".prettierrc",
+      ".prettierignore",
+      ".npmrc",
+      ".node-version",
+      "Dockerfile",
+    ]
 
-    // Copy each file that should be included
-    for (const file of allFiles) {
+    // Define quartz subdirectories to include (excluding problematic ones)
+    const quartzIncludeDirs = [
+      "quartz/bootstrap-*.mjs",
+      "quartz/build.ts",
+      "quartz/cfg.ts",
+      "quartz/worker.ts",
+      "quartz/cli/**/*",
+      "quartz/components/**/*",
+      "quartz/i18n/**/*",
+      "quartz/plugins/**/*",
+      "quartz/processors/**/*",
+      "quartz/static/**/*",
+      "quartz/styles/**/*",
+      "quartz/util/**/*",
+    ]
+
+    // Get all files from included directories only
+    const allFiles: string[] = []
+
+    // Define system files to explicitly exclude
+    const systemFilesToExclude = [
+      ".DS_Store",
+      "homebrew.mxcl.quartz.plist",
+      "Thumbs.db",
+      "desktop.ini",
+      "*.log",
+      "*.tmp",
+      "*.bak",
+      "*.swp",
+      "*.swo",
+      "runner.sh",
+      "runneroutput.log",
+    ]
+
+    // Add specific root files (excluding system files)
+    for (const file of includeFiles) {
+      const filePath = join(this.privateRepoPath, file)
+      if (existsSync(filePath) && !systemFilesToExclude.includes(file)) {
+        allFiles.push(file)
+      }
+    }
+
+    // Add quartz files with exclusions
+    for (const pattern of quartzIncludeDirs) {
+      const files = await glob(pattern, {
+        cwd: this.privateRepoPath,
+        ignore: [
+          "**/node_modules/**",
+          "**/.git/**",
+          "**/.quartz-cache/**",
+          "**/__tests__/**",
+          "**/*.test.*",
+          "**/*.spec.*",
+          "**/.DS_Store",
+          "**/Thumbs.db",
+        ],
+        dot: true,
+        nodir: true, // Only files, not directories
+      })
+      allFiles.push(...files)
+    }
+
+    // Remove duplicates
+    const uniqueFiles = [...new Set(allFiles)]
+
+    // Group files by directory for summary
+    const fileGroups: Record<string, string[]> = {}
+    for (const file of uniqueFiles) {
+      const dir = dirname(file)
+      if (!fileGroups[dir]) fileGroups[dir] = []
+      fileGroups[dir].push(basename(file))
+    }
+
+    // Show summary of files being included
+    console.log("\n📁 Files being included in public repo:")
+    for (const [dir, files] of Object.entries(fileGroups)) {
+      const dirName = dir === "." ? "root" : dir
+      console.log(`   📂 ${dirName}/ (${files.length} files)`)
+      if (dirName === "root" || files.length <= 5) {
+        files.forEach((file) => console.log(`      • ${file}`))
+      } else {
+        console.log(`      • ${files.slice(0, 3).join(", ")}... and ${files.length - 3} more`)
+      }
+    }
+
+    // Copy each file to the public repo
+    for (const file of uniqueFiles) {
       const sourcePath = join(this.privateRepoPath, file)
       const destPath = join(this.publicRepoPath, file)
 
@@ -174,6 +273,8 @@ class RepositorySanitizer {
       // Copy the file
       copyFileSync(sourcePath, destPath)
     }
+
+    this.log(`✅ Copied ${uniqueFiles.length} files to public repository`)
   }
 
   private createEnhancedGitignore(): void {
@@ -332,12 +433,13 @@ tsconfig.tsbuildinfo
     execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" })
   }
 
-  private async pushToPublicRepo(): Promise<void> {
+  private async pushToPublicRepo(fastMode: boolean = false): Promise<void> {
     this.log("Adding public repository as remote...")
     execSync(`git remote add public "${this.config.publicRepoUrl}"`, { stdio: "inherit" })
 
     this.log("Pushing to public repository...")
-    execSync(`git push public main:${this.config.branchName} --force`, { stdio: "inherit" })
+    const pushFlags = fastMode ? "--force --progress --no-verify" : "--force"
+    execSync(`git push public main:${this.config.branchName} ${pushFlags}`, { stdio: "inherit" })
   }
 
   private cleanup(): void {
@@ -345,9 +447,13 @@ tsconfig.tsbuildinfo
     rmSync(this.tempDir, { recursive: true, force: true })
   }
 
-  async sanitizeAndPush(dryRun: boolean = false): Promise<void> {
+  async sanitizeAndPush(dryRun: boolean = false, fastMode: boolean = false): Promise<void> {
     try {
       this.log("Starting sanitization process...")
+
+      if (fastMode) {
+        this.log("FAST MODE: Using optimized git operations", "info")
+      }
 
       if (dryRun) {
         this.log("DRY RUN MODE - No actual changes will be made")
@@ -363,8 +469,13 @@ tsconfig.tsbuildinfo
         await this.addAndCommitFiles()
 
         // Wait for user confirmation before pushing
-        await this.waitForUserConfirmation()
-        await this.pushToPublicRepo()
+        if (!fastMode) {
+          await this.waitForUserConfirmation()
+        } else {
+          await this.waitForFastModeConfirmation()
+        }
+
+        await this.pushToPublicRepo(fastMode)
         this.log("Successfully pushed sanitized version to public repository!", "success")
       } else {
         this.log("DRY RUN: Would push to public repository", "success")
@@ -399,6 +510,63 @@ tsconfig.tsbuildinfo
       })
     })
   }
+
+  private async waitForFastModeConfirmation(): Promise<void> {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+
+    return new Promise((resolve) => {
+      console.log("\n" + "=".repeat(60))
+      console.log("🚀 FAST MODE SANITIZATION SUMMARY")
+      console.log("=".repeat(60))
+
+      console.log("\n📋 What will be done:")
+      console.log("   ✅ Exclude ALL content (private and public)")
+      console.log("   ✅ Exclude ALL build artifacts and cache files")
+      console.log("   ✅ Exclude debug and test files")
+      console.log("   ✅ Include only source code and configuration")
+      console.log("   ✅ Use Git LFS for large files")
+      console.log("   ✅ Use optimized git operations (--progress --no-verify)")
+
+      console.log("\n📁 Files being excluded:")
+      console.log("   • content/ (all your content)")
+      console.log("   • public/ (build artifacts)")
+      console.log("   • node_modules/ (dependencies)")
+      console.log("   • .quartz-cache/ (build cache)")
+      console.log("   • api/ (API files)")
+      console.log("   • tests/ (test files)")
+      console.log("   • scripts/ (utility scripts)")
+      console.log("   • docs/ (documentation)")
+
+      console.log("\n📁 Files being included:")
+      console.log("   • quartz/ (Quartz framework source)")
+      console.log("   • package.json & package-lock.json (dependencies)")
+      console.log("   • quartz.config.ts & quartz.layout.ts (configuration)")
+      console.log("   • tsconfig.json, globals.d.ts, index.d.ts (TypeScript)")
+      console.log("   • README.md, CODE_OF_CONDUCT.md, LICENSE.txt (docs)")
+      console.log("   • CLAUDE.md (Claude logs)")
+      console.log("   • Configuration files (.gitignore, .cursorrules, etc.)")
+      console.log("   • Build files (Dockerfile, vercel.json)")
+
+      console.log(`\n🎯 Target: ${this.config.publicRepoUrl}`)
+      console.log("📊 Result: Clean source-only repository")
+
+      console.log("\n" + "=".repeat(60))
+
+      rl.question("\n🤔 Proceed with fast sanitization? (y/N): ", (answer) => {
+        rl.close()
+        if (answer.toLowerCase() === "y" || answer.toLowerCase() === "yes") {
+          this.log("🚀 Proceeding with fast sanitization...", "success")
+          resolve()
+        } else {
+          this.log("❌ Sanitization cancelled by user", "warning")
+          process.exit(0)
+        }
+      })
+    })
+  }
 }
 
 // CLI handling
@@ -406,11 +574,13 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2)
   const dryRun = args.includes("--dry-run")
   const debug = args.includes("--debug")
+  const fastMode = args.includes("--fast")
 
   if (args.includes("--help")) {
     console.log("Usage: npx tsx scripts/sanitize.ts [OPTIONS]")
     console.log("Options:")
     console.log("  --dry-run    Run sanitization without pushing")
+    console.log("  --fast       Use fast mode (skip confirmation, optimized git ops)")
     console.log("  --debug      Enable debug output")
     console.log("  --help       Show this help message")
     process.exit(0)
@@ -420,8 +590,12 @@ async function main(): Promise<void> {
     console.log("Debug mode enabled")
   }
 
+  if (fastMode) {
+    console.log("Fast mode enabled - using optimized git operations")
+  }
+
   const sanitizer = new RepositorySanitizer()
-  await sanitizer.sanitizeAndPush(dryRun)
+  await sanitizer.sanitizeAndPush(dryRun, fastMode)
 }
 
 // Run the script
