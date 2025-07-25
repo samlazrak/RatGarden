@@ -131,6 +131,28 @@ rm -rf .vscode/
 rm -rf .claude/
 rm -rf .idea/
 
+# Remove development and debug files
+log_info "Removing development and debug files..."
+rm -f debug_*.cjs
+rm -f test_*.cjs
+rm -f debug_*.css
+rm -f debug_*.js
+rm -f homebrew.mxcl.quartz.plist
+rm -f setup-launchagent.sh
+
+# Remove internal documentation and conversation logs
+log_info "Removing internal documentation..."
+rm -f CLAUDE.md
+rm -f CURSOR.md
+rm -f DRAFT_MANAGEMENT.md
+
+# Remove potentially sensitive configuration files
+log_info "Removing sensitive configuration files..."
+rm -f package-lock.json
+rm -f .npmrc
+rm -f .node-version
+rm -f vercel.json
+
 # Initialize new git repository
 git init
 git config user.name "$GIT_USER_NAME"
@@ -226,6 +248,25 @@ api-keys/
 .vscode/
 .claude/
 .idea/
+
+# Development and debug files
+debug_*.cjs
+test_*.cjs
+debug_*.css
+debug_*.js
+homebrew.mxcl.quartz.plist
+setup-launchagent.sh
+
+# Internal documentation and conversation logs
+CLAUDE.md
+CURSOR.md
+DRAFT_MANAGEMENT.md
+
+# Sensitive configuration files
+package-lock.json
+.npmrc
+.node-version
+vercel.json
 
 # Temporary files
 temp/

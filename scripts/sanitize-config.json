@@ -8,7 +8,20 @@
     "*.env",
     ".vscode/",
     ".claude/",
-    ".idea/"
+    ".idea/",
+    "debug_*.cjs",
+    "test_*.cjs",
+    "debug_*.css",
+    "debug_*.js",
+    "homebrew.mxcl.quartz.plist",
+    "setup-launchagent.sh",
+    "CLAUDE.md",
+    "CURSOR.md",
+    "DRAFT_MANAGEMENT.md",
+    "package-lock.json",
+    ".npmrc",
+    ".node-version",
+    "vercel.json"
   ],
   "patternsToRemove": [
     "api_key",

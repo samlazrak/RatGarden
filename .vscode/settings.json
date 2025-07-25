@@ -1,0 +1,33 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "files.associations": {
+    "*.scss": "scss",
+    "*.md": "markdown"
+  },
+  "scss.validate": true,
+  "markdown.preview.breaks": true,
+  "markdown.preview.linkify": true,
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/public": true,
+    "**/.quartz-cache": true,
+    "**/dist": true
+  },
+  "files.exclude": {
+    "**/.quartz-cache": true,
+    "**/public": false
+  },
+  "typescript.preferences.importModuleSpecifier": "relative"
+} 
