@@ -44,8 +44,9 @@ export const sharedPageComponents: SharedLayout = {
     Component.TagList(),
     Component.AIWritingAssistant({
       features: ["grammar", "style", "suggestions", "completion"],
-      provider: "mock",
+      provider: "openai",
       position: "floating",
+      apiEndpoint: "/api/ai-assistant",
     }),
   ],
   footer: Component.Footer({
