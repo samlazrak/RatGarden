@@ -424,12 +424,84 @@ tsconfig.tsbuildinfo
     execSync(`git config user.email "${this.config.gitConfig.userEmail}"`, { stdio: "inherit" })
   }
 
+  /**
+   * Gets the current commit message from the primary repository and sanitizes it
+   * for use in the public repository. This ensures the public repo commit messages
+   * reflect the actual changes being made while removing any sensitive information.
+   */
+  private getCurrentCommitMessage(): string {
+    try {
+      // Get the current commit message from the primary repo
+      const currentMessage = execSync("git log -1 --pretty=format:%B", {
+        cwd: this.privateRepoPath,
+        encoding: "utf8",
+      }).trim()
+
+      // Sanitize the commit message for public consumption
+      let sanitizedMessage = currentMessage
+        .replace(/sk-[a-zA-Z0-9]*/g, "sk-***")
+        .replace(/sk-ant-[a-zA-Z0-9]*/g, "sk-ant-***")
+        .replace(/api_key/gi, "api_key")
+        .replace(/password/gi, "password")
+        .replace(/secret/gi, "secret")
+        .replace(/token/gi, "token")
+
+      // Remove lines that might contain sensitive information
+      const lines = sanitizedMessage.split("\n")
+      const filteredLines = lines.filter((line) => {
+        const lowerLine = line.toLowerCase()
+        return (
+          !lowerLine.includes("api_key=") &&
+          !lowerLine.includes("password=") &&
+          !lowerLine.includes("secret=") &&
+          !lowerLine.includes("token=") &&
+          !lowerLine.includes("sk-") &&
+          !lowerLine.includes("private") &&
+          !lowerLine.includes("sensitive")
+        )
+      })
+
+      sanitizedMessage = filteredLines.join("\n").trim()
+
+      // If the sanitized message is empty or too short, use the default
+      if (!sanitizedMessage || sanitizedMessage.length < 10) {
+        return this.config.commitMessage.replace("{date}", new Date().toISOString())
+      }
+
+      // Return just the sanitized message without mentioning sanitization
+      return sanitizedMessage
+    } catch (error) {
+      this.log(`Warning: Could not get current commit message: ${error}`, "warning")
+      // Fall back to default commit message
+      return this.config.commitMessage.replace("{date}", new Date().toISOString())
+    }
+  }
+
   private async addAndCommitFiles(): Promise<void> {
     this.log("Adding files to git...")
     execSync("git add .", { stdio: "inherit" })
 
     this.log("Creating commit...")
-    const commitMessage = this.config.commitMessage.replace("{date}", new Date().toISOString())
+    const commitMessage = this.getCurrentCommitMessage()
+
+    // Log the sanitized commit message for debugging
+    if (process.argv.includes("--debug")) {
+      this.log("Original commit message from primary repo:", "info")
+      try {
+        const originalMessage = execSync("git log -1 --pretty=format:%B", {
+          cwd: this.privateRepoPath,
+          encoding: "utf8",
+        }).trim()
+        console.log("--- Original ---")
+        console.log(originalMessage)
+        console.log("--- Sanitized ---")
+        console.log(commitMessage)
+        console.log("--- End ---")
+      } catch (error) {
+        this.log(`Could not show original message: ${error}`, "warning")
+      }
+    }
+
     execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" })
   }
 
@@ -478,6 +550,27 @@ tsconfig.tsbuildinfo
         await this.pushToPublicRepo(fastMode)
         this.log("Successfully pushed sanitized version to public repository!", "success")
       } else {
+        // Show commit message processing in dry run mode
+        this.log("DRY RUN: Processing commit message...", "info")
+        const commitMessage = this.getCurrentCommitMessage()
+
+        if (process.argv.includes("--debug")) {
+          this.log("Original commit message from primary repo:", "info")
+          try {
+            const originalMessage = execSync("git log -1 --pretty=format:%B", {
+              cwd: this.privateRepoPath,
+              encoding: "utf8",
+            }).trim()
+            console.log("--- Original ---")
+            console.log(originalMessage)
+            console.log("--- Sanitized ---")
+            console.log(commitMessage)
+            console.log("--- End ---")
+          } catch (error) {
+            this.log(`Could not show original message: ${error}`, "warning")
+          }
+        }
+
         this.log("DRY RUN: Would push to public repository", "success")
         this.log(`Public repository: ${this.config.publicRepoUrl}`)
       }

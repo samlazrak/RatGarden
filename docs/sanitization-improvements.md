@@ -16,6 +16,15 @@
 - `scripts/sanitize.ts` - excluded
 - `scripts/sanitize-config.json` - excluded
 
+### Commit Message Sanitization
+
+- **New**: Commit messages are now sanitized from the primary repository ✅
+- Automatically captures the current commit message from the primary repo
+- Sanitizes sensitive information (API keys, passwords, tokens)
+- Removes lines containing sensitive data
+- Adds `[SANITIZED]` prefix to indicate the message has been processed
+- Falls back to default message if sanitization fails or message is too short
+
 ## 🚀 Additional Suggestions
 
 ### 1. Enhanced Security Patterns
@@ -122,6 +131,23 @@ Add GitHub Actions workflow:
 - Run sanitization on schedule
 - Validate public repo integrity
 - Alert on security issues
+
+### 11. Commit Message Sanitization (✅ Implemented)
+
+The sanitization script now automatically:
+
+- Captures the current commit message from the primary repository
+- Sanitizes sensitive information using regex patterns
+- Removes lines containing API keys, passwords, tokens, etc.
+- Adds a `[SANITIZED]` prefix and metadata
+- Falls back to a default message if sanitization fails
+
+**Benefits:**
+
+- Public repo commit messages reflect actual changes
+- Sensitive information is automatically removed
+- Maintains transparency while ensuring security
+- Provides clear indication that messages have been processed
 
 ## 🔧 Implementation Priority
 
