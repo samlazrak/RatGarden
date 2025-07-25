@@ -27,6 +27,9 @@ The system consists of:
 - `node_modules/` (dependencies)
 - `public/` (build output)
 - `.quartz-cache/` (build cache)
+- `.vscode/` (IDE settings - kept in private repo)
+- `.claude/` (AI assistant data - kept in private repo)
+- `.idea/` (IDE settings - kept in private repo)
 - Other build artifacts and temporary files
 
 ### Content Sanitized
@@ -40,6 +43,7 @@ The system consists of:
 - Comprehensive `.gitignore` for the public repo
 - All environment variables and secrets excluded
 - Private content and drafts filtered out
+- IDE settings and AI assistant data kept private
 
 ## Configuration
 

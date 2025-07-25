@@ -125,6 +125,12 @@ rm -f tsconfig.tsbuildinfo
 rm -f *.log
 rm -f *.tgz
 
+# Remove IDE and development-specific directories that shouldn't be in public repo
+log_info "Removing IDE and development-specific directories..."
+rm -rf .vscode/
+rm -rf .claude/
+rm -rf .idea/
+
 # Initialize new git repository
 git init
 git config user.name "$GIT_USER_NAME"
@@ -215,6 +221,11 @@ secret/
 private/
 private-keys/
 api-keys/
+
+# IDE and development-specific directories (keep in private repo only)
+.vscode/
+.claude/
+.idea/
 
 # Temporary files
 temp/

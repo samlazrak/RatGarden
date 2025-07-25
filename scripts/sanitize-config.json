@@ -1,7 +1,15 @@
 {
   "publicRepoUrl": "git@github.com:samlazrak/Digital-Garden.git",
   "branchName": "main",
-  "filesToRemove": ["api/ai-assistant.js", "private/", ".env*", "*.env"],
+  "filesToRemove": [
+    "api/ai-assistant.js",
+    "private/",
+    ".env*",
+    "*.env",
+    ".vscode/",
+    ".claude/",
+    ".idea/"
+  ],
   "patternsToRemove": [
     "api_key",
     "apiKey",

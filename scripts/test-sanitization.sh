@@ -80,6 +80,9 @@ SENSITIVE_FILES=(
     "node_modules/"
     "public/"
     ".quartz-cache/"
+    ".vscode/"
+    ".claude/"
+    ".idea/"
 )
 
 for file in "${SENSITIVE_FILES[@]}"; do
