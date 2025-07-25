@@ -27,7 +27,6 @@ tsconfig.tsbuildinfo
 private/
 
 # IDE/Editor
-.vscode/
 .idea/
 *.swp
 *.swo
