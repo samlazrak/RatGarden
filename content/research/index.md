@@ -19,13 +19,14 @@ My primary research interest lies in developing AI applications for healthcare, 
 
 ## Academic Background
 
-- **Computer Science** (UAB, 2016-2024): Technical foundation for AI development and computational thinking
-- **Philosophy** (UAB, 2022-2024): Critical thinking skills and ethical reasoning for responsible AI development
+- **Computer Science** (UAB, 2016-2025): Technical foundation for AI development and computational thinking
+- **Philosophy** (UAB, 2021-2025): Critical thinking skills and ethical reasoning for responsible AI development
 - **Biomedical Research Experience** (UAB, 2016-2022): Hands-on laboratory experience with electrophysiology, protein analysis, and data interpretation
 
 ## Research Methodology
 
 My approach combines:
+
 - Rigorous computational methods with clinical validation
 - Ethical considerations from philosophical training
 - Practical software engineering skills for real-world implementation
@@ -40,4 +41,4 @@ My approach combines:
 
 ---
 
-*This research aims to bridge the gap between cutting-edge AI technology and practical healthcare applications, ensuring that technological advances truly benefit patient outcomes while maintaining the highest ethical standards.*
+_This research aims to bridge the gap between cutting-edge AI technology and practical healthcare applications, ensuring that technological advances truly benefit patient outcomes while maintaining the highest ethical standards._
