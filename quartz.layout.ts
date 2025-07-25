@@ -16,7 +16,8 @@ export const sharedPageComponents: SharedLayout = {
         showOnlyOnLongContent: true,
         minWordsForDisplay: 300,
       }),
-      condition: (page) => page.fileData.slug !== "index" && !page.fileData.slug?.endsWith("/index"),
+      condition: (page) =>
+        page.fileData.slug !== "index" && !page.fileData.slug?.endsWith("/index"),
     }),
   ],
   afterBody: [
@@ -36,15 +37,22 @@ export const sharedPageComponents: SharedLayout = {
         showDescription: true,
         showDate: true,
         showTags: true,
-        featuredSlugs: ["research/PhD", "research/Publications", "art/My-Art", "projects/Build-Birmingham", "tools/AI-Semantic-Links"],
+        featuredSlugs: [
+          "research/PhD",
+          "research/Publications",
+          "art/My-Art",
+          "projects/Build-Birmingham",
+          "tools/AI-Semantic-Links",
+        ],
         autoFeatured: true,
       }),
       condition: (page) => page.fileData.slug === "index",
     }),
     Component.TagList(),
+    Component.PrivacyAnalytics(),
     Component.AIWritingAssistant({
       features: ["grammar", "style", "suggestions", "completion"],
-      provider: "openai",
+      provider: "gemini",
       position: "floating",
       apiEndpoint: "/api/ai-assistant",
     }),
@@ -84,28 +92,35 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.DesktopOnly(Component.LeftSidebarTabs({
-      defaultTab: "explorer"
-    })),
-    Component.MobileOnly(Component.Explorer({
-      title: "Explore",
-      folderClickBehavior: "link",
-      folderDefaultState: "collapsed",
-      useSavedState: true,
-      mapFn: (node) => node,
-      sortFn: (a, b) => {
-        // folders first, then files, both alphabetically
-        if ((!a.file && !b.file) || (a.file && b.file)) {
-          return a.displayName.localeCompare(b.displayName, undefined, { numeric: true, sensitivity: 'base' })
-        }
-        if (a.file && !b.file) {
-          return 1
-        } else {
-          return -1
-        }
-      },
-      filterFn: (node) => node.name !== "tags",
-    })),
+    Component.DesktopOnly(
+      Component.LeftSidebarTabs({
+        defaultTab: "explorer",
+      }),
+    ),
+    Component.MobileOnly(
+      Component.Explorer({
+        title: "Explore",
+        folderClickBehavior: "link",
+        folderDefaultState: "collapsed",
+        useSavedState: true,
+        mapFn: (node) => node,
+        sortFn: (a, b) => {
+          // folders first, then files, both alphabetically
+          if ((a.isFolder && b.isFolder) || (!a.isFolder && !b.isFolder)) {
+            return a.displayName.localeCompare(b.displayName, undefined, {
+              numeric: true,
+              sensitivity: "base",
+            })
+          }
+          if (!a.isFolder && b.isFolder) {
+            return 1
+          } else {
+            return -1
+          }
+        },
+        filterFn: (node) => node.slugSegment !== "tags",
+      }),
+    ),
   ],
   right: [
     Component.ConditionalRender({
@@ -126,7 +141,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ConditionalRender({
       component: Component.RightSidebarTabs({
         defaultTab: "related",
-        semanticLinksOptions: getSemanticLinkComponentConfig()
+        semanticLinksOptions: getSemanticLinkComponentConfig(),
       }),
       condition: (page) => page.fileData.slug !== "index",
     }),
@@ -163,28 +178,35 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.DesktopOnly(Component.LeftSidebarTabs({
-      defaultTab: "explorer"
-    })),
-    Component.MobileOnly(Component.Explorer({
-      title: "Explore",
-      folderClickBehavior: "link",
-      folderDefaultState: "collapsed",
-      useSavedState: true,
-      mapFn: (node) => node,
-      sortFn: (a, b) => {
-        // folders first, then files, both alphabetically
-        if ((!a.file && !b.file) || (a.file && b.file)) {
-          return a.displayName.localeCompare(b.displayName, undefined, { numeric: true, sensitivity: 'base' })
-        }
-        if (a.file && !b.file) {
-          return 1
-        } else {
-          return -1
-        }
-      },
-      filterFn: (node) => node.name !== "tags",
-    })),
+    Component.DesktopOnly(
+      Component.LeftSidebarTabs({
+        defaultTab: "explorer",
+      }),
+    ),
+    Component.MobileOnly(
+      Component.Explorer({
+        title: "Explore",
+        folderClickBehavior: "link",
+        folderDefaultState: "collapsed",
+        useSavedState: true,
+        mapFn: (node) => node,
+        sortFn: (a, b) => {
+          // folders first, then files, both alphabetically
+          if ((a.isFolder && b.isFolder) || (!a.isFolder && !b.isFolder)) {
+            return a.displayName.localeCompare(b.displayName, undefined, {
+              numeric: true,
+              sensitivity: "base",
+            })
+          }
+          if (!a.isFolder && b.isFolder) {
+            return 1
+          } else {
+            return -1
+          }
+        },
+        filterFn: (node) => node.slugSegment !== "tags",
+      }),
+    ),
   ],
   right: [],
 }

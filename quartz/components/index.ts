@@ -36,6 +36,8 @@ import HomepageBio from "./HomepageBio"
 import FeaturedContent from "./FeaturedContent"
 import ReadingProgress from "./ReadingProgress"
 import ReadingTime from "./ReadingTime"
+import PrivacyAnalytics from "./PrivacyAnalytics"
+import MedicalCitations from "./MedicalCitations"
 
 export {
   ArticleTitle,
@@ -76,4 +78,6 @@ export {
   FeaturedContent,
   ReadingProgress,
   ReadingTime,
+  PrivacyAnalytics,
+  MedicalCitations,
 }

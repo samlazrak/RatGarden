@@ -6,12 +6,14 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 
 ## Code Style & Standards
 
-- Use TypeScript with strict type checking
+- Use TypeScript with strict type checking for ALL new code
 - Use Preact instead of React for all components
 - Follow existing code patterns and file organization
 - Use SCSS for styling with CSS custom properties
 - Implement proper error boundaries and loading states
 - Write comprehensive unit tests for all new code
+- **NEVER create JavaScript files - always use TypeScript (.ts/.tsx)**
+- Convert any existing JavaScript files to TypeScript when modifying them
 
 ## File Organization
 
@@ -29,8 +31,8 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 - Use `npm run test` to run tests
 - Use `npm run check` for type checking and formatting
 - Follow TDD methodology - write tests first
-- **Shell**: Using bash via runner.sh - always use `./runner.sh <command>` for terminal operations
-- **Output**: Check `runneroutput.log` for command results instead of terminal output (automatically cleaned up after each command)
+- **Shell**: Use direct terminal commands unless specifically asked to use runner.sh
+- **Runner.sh**: Only use `./runner.sh <command>` when explicitly requested by user
 
 ## Key Technologies
 
