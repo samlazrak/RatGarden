@@ -25,7 +25,8 @@
     "dev-with-drafts": "QUARTZ_INCLUDE_DRAFTS=true npm run generate-graph-links && npm run kill && npm run build && QUARTZ_INCLUDE_DRAFTS=true npx quartz build --serve",
     "serve-with-drafts": "QUARTZ_INCLUDE_DRAFTS=true npx quartz build --serve",
     "generate-graph-links": "node scripts/generate-graph-links.js",
-    "clear-semantic-cache": "node scripts/clear-semantic-cache.js"
+    "clear-semantic-cache": "node scripts/clear-semantic-cache.js",
+    "sanitize": "tsx scripts/sanitize.ts"
   },
   "engines": {
     "npm": ">=10.9.2",

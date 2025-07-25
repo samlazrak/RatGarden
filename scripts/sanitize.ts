@@ -105,6 +105,10 @@ class RepositorySanitizer {
         "config.json",
         "secrets.json",
         "credentials.json",
+        "docs/sanitization-rules.md",
+        "docs/sanitization-improvements.md",
+        "scripts/sanitize.ts",
+        "scripts/sanitize-config.json",
       ],
       patternsToRemove: [
         "api_key",
@@ -257,6 +261,12 @@ content/blog/ai-features-showcase.md
 content/blog/nvidia-computer-vision-projects.md
 content/demos/ai-interactive-demos.md
 content/art/Ritual - Essential Grimoire.md
+
+# Sanitization tools and documentation
+docs/sanitization-rules.md
+docs/sanitization-improvements.md
+scripts/sanitize.ts
+scripts/sanitize-config.json
 
 # Test files
 tests/

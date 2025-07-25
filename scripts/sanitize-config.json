@@ -49,7 +49,11 @@
     "*.cert",
     "config.json",
     "secrets.json",
-    "credentials.json"
+    "credentials.json",
+    "docs/sanitization-rules.md",
+    "docs/sanitization-improvements.md",
+    "scripts/sanitize.ts",
+    "scripts/sanitize-config.json"
   ],
   "patternsToRemove": [
     "api_key",
