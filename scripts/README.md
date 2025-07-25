@@ -44,6 +44,9 @@ The system consists of:
 - All environment variables and secrets excluded
 - Private content and drafts filtered out
 - IDE settings and AI assistant data kept private
+- API key patterns replaced with sanitized versions (sk-\*\*\*)
+- Specific API key examples removed from documentation
+- Content files scanned and cleaned for sensitive patterns
 
 ## Configuration
 

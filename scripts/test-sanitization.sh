@@ -76,6 +76,7 @@ SENSITIVE_FILES=(
     "api/ai-assistant.js"
     ".env"
     ".env.local"
+    ".env.example"
     "private/"
     "node_modules/"
     "public/"

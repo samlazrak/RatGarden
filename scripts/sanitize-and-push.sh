@@ -152,6 +152,7 @@ rm -f package-lock.json
 rm -f .npmrc
 rm -f .node-version
 rm -f vercel.json
+rm -f .env.example
 
 # Initialize new git repository
 git init
@@ -267,6 +268,7 @@ package-lock.json
 .npmrc
 .node-version
 vercel.json
+.env.example
 
 # Temporary files
 temp/
@@ -363,6 +365,41 @@ find . -type f \( -name "*test*" -o -name "*Test*" \) \( -name "*.js" -o -name "
         rm -f "$file"
     fi
 done
+
+# Enhanced content sanitization
+log_info "Sanitizing content files..."
+find . -type f -name "*.md" -not -path "./node_modules/*" | while read -r file; do
+    if [ -f "$file" ]; then
+        # Replace API key patterns with sanitized versions
+        sed -i.bak 's/sk-[a-zA-Z0-9]*/sk-***/g' "$file" 2>/dev/null || true
+        sed -i.bak 's/sk-ant-[a-zA-Z0-9]*/sk-ant-***/g' "$file" 2>/dev/null || true
+        
+        # Remove specific lines with API key examples
+        sed -i.bak '/OPENAI_API_KEY=sk-/d' "$file" 2>/dev/null || true
+        sed -i.bak '/ANTHROPIC_API_KEY=sk-ant-/d' "$file" 2>/dev/null || true
+        
+        # Remove lines with actual API key patterns
+        sed -i.bak '/^[[:space:]]*[A-Z_]*API_KEY=sk-/d' "$file" 2>/dev/null || true
+        
+        # Clean up backup files
+        rm -f "$file.bak" 2>/dev/null || true
+    fi
+done
+
+# Sanitize specific documentation files
+if [ -f "content/docs/ai-features-documentation.md" ]; then
+    log_info "Sanitizing AI features documentation..."
+    # Remove specific API key examples
+    sed -i.bak '/OPENAI_API_KEY=sk-/,+1d' "content/docs/ai-features-documentation.md" 2>/dev/null || true
+    sed -i.bak '/ANTHROPIC_API_KEY=sk-ant-/,+1d' "content/docs/ai-features-documentation.md" 2>/dev/null || true
+    
+    # Replace any remaining API key patterns
+    sed -i.bak 's/sk-[a-zA-Z0-9]*/sk-***/g' "content/docs/ai-features-documentation.md" 2>/dev/null || true
+    sed -i.bak 's/sk-ant-[a-zA-Z0-9]*/sk-ant-***/g' "content/docs/ai-features-documentation.md" 2>/dev/null || true
+    
+    # Clean up backup file
+    rm -f "content/docs/ai-features-documentation.md.bak" 2>/dev/null || true
+fi
 
 # Create a README for the public repo
 log_info "Creating public README..."

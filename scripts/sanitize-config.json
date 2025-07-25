@@ -21,7 +21,8 @@
     "package-lock.json",
     ".npmrc",
     ".node-version",
-    "vercel.json"
+    "vercel.json",
+    ".env.example"
   ],
   "patternsToRemove": [
     "api_key",
@@ -30,7 +31,10 @@
     "secret",
     "password",
     "token",
-    "OPENAI_API_KEY"
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "sk-[a-zA-Z0-9]*",
+    "sk-ant-[a-zA-Z0-9]*"
   ],
   "directoriesToScan": ["content/", "docs/"],
   "fileExtensionsToScan": ["*.md", "*.js", "*.ts", "*.json"],
