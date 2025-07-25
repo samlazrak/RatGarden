@@ -19,6 +19,14 @@ Build Birmingham is a **non-profit grassroots initiative** aimed at bridging the
 - **Education Integration**: Bridge the gap between academic learning and real-world application through partnerships with universities and coding bootcamps
 - **Non-Profit Mission**: Operate as a community-focused organization dedicated to Alabama's tech ecosystem growth
 
+## Partnerships & Collaborations
+
+We're actively working with:
+- **Vanguard Development Collective**: Youth-focused economic development initiatives
+- **UAB Computer Science Department**: Student engagement and internship programs
+- **Innovation Depot**: Birmingham's startup incubator and coworking space
+- **Local Coding Bootcamps**: Pipeline development for career changers
+
 ## Tech Stack
 
 The platform is built with modern, enterprise-grade technologies:
@@ -44,14 +52,6 @@ The platform is built with modern, enterprise-grade technologies:
 - **Local Events Integration**: Calendar and RSVP system for tech meetups and workshops
 - **Job Board**: Direct integration with local companies and startups
 - **Skill Matching**: AI-powered recommendations for project-talent matching
-
-## Partnerships & Collaborations
-
-We're actively working with:
-- **Vanguard Development Collective**: Youth-focused economic development initiatives
-- **UAB Computer Science Department**: Student engagement and internship programs
-- **Innovation Depot**: Birmingham's startup incubator and coworking space
-- **Local Coding Bootcamps**: Pipeline development for career changers
 
 ## Get Involved
 

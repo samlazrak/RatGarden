@@ -10,11 +10,9 @@ This section showcases my artistic endeavors, which blend traditional artistic t
 
 ## Artistic Philosophy
 
-My creative practice is informed by:
-- **Interdisciplinary Exploration**: Drawing connections between technology, philosophy, and traditional crafts
-- **Material Investigation**: Working with both physical and digital media to explore form and meaning
-- **Computational Aesthetics**: Using algorithms and data as creative tools and conceptual frameworks
-- **Historical Dialogue**: Engaging with historical artistic traditions while exploring contemporary possibilities
+Art has always been my space for exploring ideas that don't fit neatly into disciplinary boxes. My background in technology and philosophy naturally flows into my creative work, where I find unexpected connections between ancient crafts and cutting-edge computational methods. There's something profound about working with both code and clay, pixels and paper—each medium teaches different lessons about form, structure, and meaning.
+
+I'm fascinated by how algorithms can become brushes and data can become pigment. Computational aesthetics isn't about replacing traditional art forms; it's about expanding our creative vocabulary. When I engage with historical artistic traditions—whether through bookbinding techniques or classical composition principles—I'm not trying to recreate the past but to understand how these time-tested approaches can inform contemporary digital practice.
 
 ## Media & Techniques
 
@@ -36,7 +34,6 @@ My work often explores:
 ## Contents
 
 - [[art/My Art]] - Personal artistic projects and exhibitions
-- [[art/Book Arts]] - Exploration of book forms, paper engineering, and bibliographic art
 - [[art/Ritual - Essential Grimoire]] - Interactive canvas visualization demonstrating computational creativity
 
 ---

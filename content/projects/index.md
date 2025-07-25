@@ -10,11 +10,9 @@ This section documents my involvement in technology projects and community build
 
 ## Philosophy
 
-My approach to projects and community work is guided by:
-- **Open Source Principles**: Believing in transparent, collaborative development that benefits everyone
-- **Community-Centered Design**: Prioritizing the needs and input of the communities we serve
-- **Ethical Technology**: Ensuring that technology development considers social impact and equity
-- **Knowledge Sharing**: Contributing to collective learning and skill development
+My approach to projects and community work stems from a deep belief in technology's potential to create positive change. I've always been drawn to open source development because transparency and collaboration lead to better solutions that benefit everyone, not just a select few. When building technology, I prioritize listening to and understanding the communities we serve—their needs and perspectives shape everything from initial design to final implementation.
+
+Throughout my career, I've witnessed how technology can either reinforce existing inequalities or help bridge them. This understanding drives my commitment to ethical development practices that consider social impact at every stage. Knowledge sharing is fundamental to this approach; by contributing to collective learning and skill development, we create a rising tide that lifts all boats in our tech ecosystem.
 
 ## Focus Areas
 

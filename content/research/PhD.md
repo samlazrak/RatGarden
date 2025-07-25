@@ -6,6 +6,30 @@ tags: [learning, education, computer-science, zettelkasten, ai, medicine, biomed
 
 # **AI in Medicine & Biomedical Engineering: Research Focus**
 
+## Table of Contents
+
+- [Research Vision](#research-vision)
+- [Research Goals](#research-goals)
+- [Research Background & Foundation](#research-background--foundation)
+  - [Biomedical Research Experience](#biomedical-research-experience-uab-2016-2022)
+  - [Current AI/Medical Projects](#current-aimedical-projects)
+- [Why This Research Matters](#why-this-research-matters)
+- [Technical Foundation & Skills](#technical-foundation--skills)
+  - [Educational Background](#educational-background)
+  - [Software Engineering Background](#software-engineering-background)
+  - [Current AI/ML Skills](#current-aiml-skills)
+- [Research Plan & Methodology](#research-plan--methodology)
+  - [Phase 1: Clinical Data Analysis](#phase-1-clinical-data-analysis-months-1-6)
+  - [Phase 2: Medical Imaging AI](#phase-2-medical-imaging-ai-months-6-12)
+  - [Phase 3: Predictive Modeling](#phase-3-predictive-modeling-months-12-18)
+  - [Phase 4: Pharmaceutical Applications](#phase-4-pharmaceutical-applications-months-18-24)
+- [UAB Residency Opportunities](#uab-residency-opportunities)
+- [Future Research Directions](#future-research-directions)
+- [Technical Skills Development Plan](#technical-skills-development-plan)
+- [Research Questions & Challenges](#research-questions--challenges)
+- [Expected Impact & Contributions](#expected-impact--contributions)
+- [Deep Dive into AI-Medicine Integration](#deep-dive-into-ai-medicine-integration)
+
 ## **Research Vision**
 
 As a software engineer with 5+ years of experience in full-stack development and a strong background in biomedical research, I am uniquely positioned to advance the intersection of Artificial Intelligence (AI) and Medicine/Biomedical Engineering. My dual education in Computer Science and Philosophy, combined with my journey from laboratory research assistant to AI developer, has given me the technical skills, clinical understanding, and ethical framework needed to create meaningful healthcare AI applications.

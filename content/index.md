@@ -7,7 +7,6 @@ tags: [digital-garden, ai, medicine, art, research, technology]
 <!-- Graph links - invisible but parsed by Quartz -->
 <div style="font-size: 0px; color: transparent; height: 0; overflow: hidden;">
 
-[[art/Book Arts]]
 [[art/My Art]]
 [[art/Ritual - Essential Grimoire]]
 [[art/index]]

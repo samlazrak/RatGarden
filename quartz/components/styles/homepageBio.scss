@@ -121,6 +121,38 @@
           color: var(--darkgray);
         }
       }
+      
+      .tech-stack {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: var(--light);
+        border-radius: 8px;
+        border: 1px solid var(--lightgray);
+        
+        h3 {
+          margin: 0 0 1rem 0;
+          font-size: 1.1rem;
+          color: var(--secondary);
+          font-weight: 600;
+        }
+        
+        .tech-categories {
+          display: grid;
+          gap: 0.75rem;
+          
+          .tech-category {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: var(--darkgray);
+            
+            strong {
+              color: var(--dark);
+              font-weight: 600;
+              margin-right: 0.5rem;
+            }
+          }
+        }
+      }
     }
     
     .bio-social {
@@ -288,7 +320,7 @@
     .bio-content {
       .bio-description {
         .current-focus {
-          background: rgba(var(--highlight-rgb), 0.1);
+          background: var(--highlight);
         }
       }
       
