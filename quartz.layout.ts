@@ -36,7 +36,7 @@ export const sharedPageComponents: SharedLayout = {
         showDescription: true,
         showDate: true,
         showTags: true,
-        featuredSlugs: ["research/PhD", "research/Publications", "art/My-Art", "art/Book-Arts", "projects/Build-Birmingham", "tools/AI-Semantic-Links"],
+        featuredSlugs: ["research/PhD", "research/Publications", "art/My-Art", "projects/Build-Birmingham", "tools/AI-Semantic-Links"],
         autoFeatured: true,
       }),
       condition: (page) => page.fileData.slug === "index",
@@ -137,7 +137,28 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.DesktopOnly(Component.LeftSidebarTabs({
+      defaultTab: "explorer"
+    })),
+    Component.MobileOnly(Component.Explorer({
+      title: "Explore",
+      folderClickBehavior: "link",
+      folderDefaultState: "collapsed",
+      useSavedState: true,
+      mapFn: (node) => node,
+      sortFn: (a, b) => {
+        // folders first, then files, both alphabetically
+        if ((!a.file && !b.file) || (a.file && b.file)) {
+          return a.displayName.localeCompare(b.displayName, undefined, { numeric: true, sensitivity: 'base' })
+        }
+        if (a.file && !b.file) {
+          return 1
+        } else {
+          return -1
+        }
+      },
+      filterFn: (node) => node.name !== "tags",
+    })),
   ],
   right: [],
 }

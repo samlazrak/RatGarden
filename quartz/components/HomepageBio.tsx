@@ -86,22 +86,41 @@ export default ((opts?: Partial<Options>) => {
             <div class="bio-description">
               <p>
                 Welcome to my digital garden! I'm a software engineer with 5+ years of experience 
-                and a passion for advancing AI in medicine and biomedical engineering. With a unique 
-                background spanning biomedical research, full-stack development, and philosophical 
-                ethics, I work at the intersection of technology and healthcare.
+                and a passion for advancing AI in medicine and biomedical engineering. I graduated 
+                with dual degrees in Computer Science and Philosophy from UAB (2016-2024), giving me 
+                a unique foundation in both technical development and ethical reasoning to work at 
+                the intersection of technology and healthcare.
               </p>
               
               {options.showCurrentFocus && (
                 <div class="current-focus">
                   <h3>Current Focus</h3>
                   <p>
-                    Pursuing PhD research in AI applications for medical imaging analysis, 
-                    clinical decision support systems, and privacy-preserving healthcare AI. 
-                    Building on my published research in influenza virus protein interactions 
+                    Pursuing PhD research focused on applying AI to healthcare, particularly in 
+                    medical imaging and clinical decision support. My work emphasizes privacy-preserving 
+                    approaches, building on published research in influenza virus protein interactions 
                     and ion channel regulation.
                   </p>
                 </div>
               )}
+              
+              <div class="tech-stack">
+                <h3>Technical Expertise</h3>
+                <div class="tech-categories">
+                  <div class="tech-category">
+                    <strong>Languages:</strong> Python, Java, C#, JavaScript/TypeScript, SQL
+                  </div>
+                  <div class="tech-category">
+                    <strong>AI/ML:</strong> TensorFlow, PyTorch, scikit-learn, CNNs, NLP, LlamaSharp
+                  </div>
+                  <div class="tech-category">
+                    <strong>Web:</strong> React, Angular, Spring Boot, .NET/Blazor, Node.js
+                  </div>
+                  <div class="tech-category">
+                    <strong>Cloud/DevOps:</strong> AWS, Azure, Docker, PostgreSQL, CI/CD
+                  </div>
+                </div>
+              </div>
             </div>
             
             {options.showSocialLinks && (
