@@ -29,6 +29,17 @@ body {
   color: var(--darkgray);
 }
 
+/* Ensure text selection is enabled for content areas */
+article,
+.page-content,
+.content,
+main {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
 p,
 ul,
 text,

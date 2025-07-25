@@ -1,7 +1,7 @@
 import { execSync } from "child_process"
 import { copyFileSync, existsSync } from "fs"
 import { join } from "path"
-import { ConsoleLogger, Logger } from "./utils/logger"
+import { ConsoleLogger, Logger } from "../utils/logger"
 
 interface LaunchAgentConfig {
   logger?: Logger
@@ -57,7 +57,8 @@ async function main(): Promise<void> {
   await setup.setup()
 }
 
-if (require.main === module) {
+// Check if this is the main module being executed
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
     console.error("Launch agent setup failed:", error)
     process.exit(1)

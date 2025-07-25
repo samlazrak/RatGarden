@@ -602,7 +602,6 @@ body {
   --text-muted: var(--color-base-70);
   --text-normal: var(--color-base-100);
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  -webkit-user-select: none;
   background-color: var(--background-primary);
   caret-color: var(--caret-color);
   color: var(--text-normal);
@@ -617,7 +616,6 @@ body {
   padding: 0;
   padding-top: 0;
   text-rendering: optimizeLegibility;
-  user-select: none;
   width: 100%;
 }
 /* START DARK */

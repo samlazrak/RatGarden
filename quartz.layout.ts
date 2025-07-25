@@ -54,7 +54,7 @@ export const sharedPageComponents: SharedLayout = {
       features: ["grammar", "style", "suggestions", "completion"],
       provider: "gemini",
       position: "floating",
-      apiEndpoint: "/api/ai-assistant",
+      apiEndpoint: "/.netlify/functions/gemini-assistant",
     }),
   ],
   footer: Component.Footer({

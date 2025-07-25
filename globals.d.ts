@@ -1,4 +1,11 @@
 export declare global {
+  interface CustomEventMap {
+    nav: CustomEvent<{ url: URL }>
+    prenav: CustomEvent<{}>
+    themechange: CustomEvent<{ theme: string }>
+    readermodechange: CustomEvent<{ mode: string }>
+  }
+
   interface Document {
     addEventListener<K extends keyof CustomEventMap>(
       type: K,
@@ -13,5 +20,6 @@ export declare global {
   interface Window {
     spaNavigate(url: URL, isBack: boolean = false)
     addCleanup(fn: (...args: any[]) => void)
+    fetchData: Promise<Record<string, any>>
   }
 }

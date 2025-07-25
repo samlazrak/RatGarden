@@ -1,5 +1,5 @@
 import { execSync } from "child_process"
-import { ConsoleLogger, Logger } from "./utils/logger"
+import { ConsoleLogger, Logger } from "../utils/logger"
 
 interface DevServerConfig {
   logger?: Logger
@@ -51,7 +51,8 @@ async function main(): Promise<void> {
   await server.start()
 }
 
-if (require.main === module) {
+// Check if this is the main module being executed
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
     console.error("Development server failed:", error)
     process.exit(1)

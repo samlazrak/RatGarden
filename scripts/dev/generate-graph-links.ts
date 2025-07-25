@@ -1,6 +1,6 @@
 import { basename, join } from "path"
-import { FileSystem, NodeFileSystem } from "./utils/file-system"
-import { ConsoleLogger, Logger } from "./utils/logger"
+import { FileSystem, NodeFileSystem } from "../utils/file-system"
+import { ConsoleLogger, Logger } from "../utils/logger"
 
 interface GraphLinkGeneratorConfig {
   contentDir: string
@@ -149,7 +149,8 @@ async function main(): Promise<void> {
   await generator.generateGraphLinks()
 }
 
-if (require.main === module) {
+// Check if this is the main module being executed
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
     console.error("Graph link generation failed:", error)
     process.exit(1)

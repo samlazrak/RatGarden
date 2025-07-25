@@ -134,12 +134,12 @@ export default ((userOpts?: Partial<AIWritingAssistantOptions>) => {
 
             <div class="assistant-footer">
               <div class="usage-info">
-                <span class="usage-label">Daily usage:</span>
-                <span class="usage-count">0 / 100</span>
+                <span class="usage-label">Environment:</span>
+                <span class="usage-count">Loading...</span>
               </div>
               <div class="provider-info">
-                <span class="provider-label">Provider:</span>
-                <span class="provider-name">{opts.provider}</span>
+                <span class="provider-label">Status:</span>
+                <span class="provider-name">Loading...</span>
               </div>
             </div>
           </div>

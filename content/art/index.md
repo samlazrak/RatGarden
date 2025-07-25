@@ -4,6 +4,36 @@ description: Mixed-media art, book arts, computational creativity, and explorati
 tags: [art, creative, mixed-media, book-arts, computational, visual]
 ---
 
+<!-- Graph links - invisible but parsed by Quartz -->
+<div style="font-size: 0px; color: transparent; height: 0; overflow: hidden;">
+
+[[index]]
+[[tools/index]]
+[[tools/AI Semantic Links]]
+[[research/index]]
+[[research/ScribeAI-Clinical-Documentation]]
+[[research/Publications]]
+[[research/PhD]]
+[[projects/index]]
+[[projects/Build Birmingham]]
+[[garden/sanitization-system]]
+[[garden/index]]
+[[garden/ai-features-showcase]]
+[[drafts/WatchGuard-Waiting-Room-Intelligence]]
+[[drafts/MediSight-Clinical-Intelligence-Platform]]
+[[docs/ai-features-documentation]]
+[[demos/medical-citations-test]]
+[[demos/ai-interactive-demos]]
+[[blog/privacy-focused-analytics-implementation]]
+[[blog/nvidia-computer-vision-projects]]
+[[blog/clinical-note-templates-digital-implementation]]
+[[blog/ai-features-showcase]]
+[[art/index]]
+[[art/Ritual - Essential Grimoire]]
+[[art/My Art]]
+
+</div>
+
 # Art & Creative Works
 
 This section showcases my artistic endeavors, which blend traditional artistic techniques with computational methods and interdisciplinary thinking. My work explores the intersection of technology, craft, and human expression.
