@@ -15,7 +15,8 @@ The system consists of:
 
 1. **Automatic Trigger**: When you push to the `main` branch, the pre-push hook automatically runs
 2. **Sanitization**: The script creates a clean copy of your repo with sensitive data removed
-3. **Public Push**: The sanitized version is pushed to your public showcase repository
+3. **User Confirmation**: Waits for user input before pushing to public repository
+4. **Public Push**: The sanitized version is pushed to your public showcase repository after confirmation
 
 ## What Gets Sanitized
 
@@ -76,6 +77,7 @@ npx tsx scripts/test-sanitization.ts
 ## Safety Features
 
 - **Non-blocking**: If sanitization fails, your original push still succeeds
+- **User confirmation**: Requires explicit user approval before pushing to public repo
 - **Temporary files**: All work is done in `/tmp` and cleaned up automatically
 - **Force push**: Uses `--force` to ensure the public repo is completely replaced
 - **Error handling**: Comprehensive error checking and logging
