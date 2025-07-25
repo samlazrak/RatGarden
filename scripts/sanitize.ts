@@ -4,6 +4,7 @@ import { execSync } from "child_process"
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs"
 import { glob } from "glob"
 import { dirname, join } from "path"
+import * as readline from "readline"
 
 interface SanitizeConfig {
   publicRepoUrl: string
@@ -340,7 +341,7 @@ tsconfig.tsbuildinfo
 
   async sanitizeAndPush(dryRun: boolean = false): Promise<void> {
     try {
-      this.log("Starting sanitization and push process...")
+      this.log("Starting sanitization process...")
 
       if (dryRun) {
         this.log("DRY RUN MODE - No actual changes will be made")
@@ -354,6 +355,9 @@ tsconfig.tsbuildinfo
       if (!dryRun) {
         await this.initializeGitRepository()
         await this.addAndCommitFiles()
+
+        // Wait for user confirmation before pushing
+        await this.waitForUserConfirmation()
         await this.pushToPublicRepo()
         this.log("Successfully pushed sanitized version to public repository!", "success")
       } else {
@@ -366,6 +370,28 @@ tsconfig.tsbuildinfo
     } finally {
       this.cleanup()
     }
+  }
+
+  private async waitForUserConfirmation(): Promise<void> {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+
+    return new Promise((resolve) => {
+      this.log("Sanitization complete! Repository is ready to push.", "success")
+      this.log(`Public repository: ${this.config.publicRepoUrl}`, "info")
+      this.log(
+        "Review the sanitized content and press Enter to push, or Ctrl+C to cancel.",
+        "warning",
+      )
+
+      rl.question("Press Enter to push to public repository, or Ctrl+C to cancel: ", () => {
+        rl.close()
+        this.log("Pushing to public repository...", "info")
+        resolve()
+      })
+    })
   }
 }
 
