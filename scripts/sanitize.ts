@@ -510,8 +510,7 @@ tsconfig.tsbuildinfo
     execSync(`git remote add public "${this.config.publicRepoUrl}"`, { stdio: "inherit" })
 
     this.log("Pushing to public repository...")
-    const pushFlags = fastMode ? "--force --progress --no-verify" : "--force"
-    execSync(`git push public main:${this.config.branchName} ${pushFlags}`, { stdio: "inherit" })
+    execSync(`git push public main:${this.config.branchName} --force`, { stdio: "inherit" })
   }
 
   private cleanup(): void {
