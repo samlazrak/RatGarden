@@ -109,11 +109,179 @@ log_info "Creating sanitized copy of repository..."
 cp -r "$PRIVATE_REPO_PATH" "$TEMP_DIR/"
 cd "$TEMP_DIR/RatGarden"
 
+# Create comprehensive .gitignore BEFORE any other operations
+log_info "Creating enhanced .gitignore for public repo..."
+
+# Start with the existing .gitignore and enhance it
+if [ -f "$PRIVATE_REPO_PATH/.gitignore" ]; then
+    cp "$PRIVATE_REPO_PATH/.gitignore" .gitignore
+    echo "" >> .gitignore
+    echo "# Enhanced exclusions for public repository" >> .gitignore
+else
+    # Create a basic .gitignore if none exists
+    cat > .gitignore << 'EOF'
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+public/
+prof/
+.quartz-cache/
+tsconfig.tsbuildinfo
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Replit
+.replit
+replit.nix
+EOF
+fi
+
+# Add additional security exclusions for public repo
+cat >> .gitignore << 'EOF'
+
+# Enhanced exclusions for public repository
+# Environment files and secrets
+.env
+.env.*
+*.env
+secrets/
+secret/
+private/
+private-keys/
+api-keys/
+
+# IDE and development-specific directories (keep in private repo only)
+.vscode/
+.claude/
+.idea/
+
+# Development and debug files
+debug_*.cjs
+test_*.cjs
+debug_*.css
+debug_*.js
+homebrew.mxcl.quartz.plist
+setup-launchagent.sh
+
+# Internal documentation and conversation logs
+CLAUDE.md
+CURSOR.md
+DRAFT_MANAGEMENT.md
+
+# Sensitive configuration files
+package-lock.json
+.npmrc
+.node-version
+vercel.json
+.env.example
+
+# Temporary files
+temp/
+tmp/
+
+# Cache directories
+.cache/
+cache/
+
+# Local configuration files
+config.local.*
+*.local.*
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Test files that might contain sensitive data
+test-secrets.*
+*secret*.test.*
+
+# Additional security exclusions
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cert
+config.json
+secrets.json
+credentials.json
+
+# API and sensitive files
+api/ai-assistant.js
+api/
+
+# Content that should not be public
+content/docs/ai-features-documentation.md
+content/blog/ai-features-showcase.md
+content/blog/nvidia-computer-vision-projects.md
+content/demos/ai-interactive-demos.md
+content/art/Ritual - Essential Grimoire.md
+
+# Test files
+tests/
+quartz/components/__tests__/
+
+# Build and cache files
+public/
+.quartz-cache/
+prof/
+
 # Remove .git directory to start fresh
 rm -rf .git
 
-# Remove build artifacts and dependencies that shouldn't be in public repo
-log_info "Removing build artifacts and dependencies..."
+# Remove .git directory to start fresh
+rm -rf .git
+
+# Remove files and directories that should not be in public repo
+log_info "Removing files and directories that should not be public..."
+
+# Remove build artifacts and dependencies
 rm -rf node_modules/
 rm -rf public/
 rm -rf .quartz-cache/
@@ -125,14 +293,12 @@ rm -f tsconfig.tsbuildinfo
 rm -f *.log
 rm -f *.tgz
 
-# Remove IDE and development-specific directories that shouldn't be in public repo
-log_info "Removing IDE and development-specific directories..."
+# Remove IDE and development-specific directories
 rm -rf .vscode/
 rm -rf .claude/
 rm -rf .idea/
 
 # Remove development and debug files
-log_info "Removing development and debug files..."
 rm -f debug_*.cjs
 rm -f test_*.cjs
 rm -f debug_*.css
@@ -141,18 +307,39 @@ rm -f homebrew.mxcl.quartz.plist
 rm -f setup-launchagent.sh
 
 # Remove internal documentation and conversation logs
-log_info "Removing internal documentation..."
 rm -f CLAUDE.md
 rm -f CURSOR.md
 rm -f DRAFT_MANAGEMENT.md
 
 # Remove potentially sensitive configuration files
-log_info "Removing sensitive configuration files..."
 rm -f package-lock.json
 rm -f .npmrc
 rm -f .node-version
 rm -f vercel.json
 rm -f .env.example
+
+# Remove API and sensitive files
+rm -rf api/
+rm -f *.key
+rm -f *.pem
+rm -f *.p12
+rm -f *.pfx
+rm -f *.crt
+rm -f *.cert
+rm -f config.json
+rm -f secrets.json
+rm -f credentials.json
+
+# Remove test files
+rm -rf tests/
+rm -rf quartz/components/__tests__/
+
+# Remove specific content files that should not be public
+rm -f content/docs/ai-features-documentation.md
+rm -f content/blog/ai-features-showcase.md
+rm -f content/blog/nvidia-computer-vision-projects.md
+rm -f content/demos/ai-interactive-demos.md
+rm -f content/art/Ritual\ -\ Essential\ Grimoire.md
 
 # Initialize new git repository
 git init
