@@ -75,7 +75,6 @@ class RepositorySanitizer {
         "docs/DRAFT_MANAGEMENT.md",
         "runner.sh",
         "runneroutput.log",
-        "package-lock.json",
         ".npmrc",
         ".node-version",
         "vercel.json",
