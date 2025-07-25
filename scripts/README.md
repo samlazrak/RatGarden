@@ -6,9 +6,10 @@ This directory contains scripts for automatically creating a sanitized version o
 
 The system consists of:
 
-- `sanitize-and-push.sh` - Main sanitization script
+- `sanitize.ts` - Main TypeScript sanitization script
 - `sanitize-config.json` - Configuration file for customization
 - `.git/hooks/pre-push` - Git hook that runs automatically on push
+- `test-sanitization.ts` - Test script to verify system functionality
 
 ## How It Works
 
@@ -63,10 +64,13 @@ If you want to run the sanitization manually:
 
 ```bash
 # Run the full sanitization and push
-./scripts/sanitize-and-push.sh
+npx tsx scripts/sanitize.ts
 
 # Or just test the script without pushing
-./scripts/sanitize-and-push.sh --dry-run
+npx tsx scripts/sanitize.ts --dry-run
+
+# Run comprehensive tests
+npx tsx scripts/test-sanitization.ts
 ```
 
 ## Safety Features
@@ -89,7 +93,7 @@ If you want to run the sanitization manually:
 Add `--debug` to the script for verbose output:
 
 ```bash
-./scripts/sanitize-and-push.sh --debug
+npx tsx scripts/sanitize.ts --debug
 ```
 
 ## Security Notes

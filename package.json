@@ -110,6 +110,7 @@
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
+    "@types/glob": "^8.1.0",
     "@types/hast": "^3.0.4",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.15.23",
@@ -118,8 +119,9 @@
     "@types/ws": "^8.18.1",
     "@types/yargs": "^17.0.33",
     "esbuild": "^0.25.5",
+    "glob": "^11.0.3",
     "prettier": "^3.5.3",
-    "tsx": "^4.19.4",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
 }
