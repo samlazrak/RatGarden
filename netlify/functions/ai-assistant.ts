@@ -1,4 +1,24 @@
-import type { Handler, HandlerContext, HandlerEvent } from "@netlify/functions"
+// Netlify function types
+interface HandlerEvent {
+  httpMethod: string
+  body: string | null
+  path: string
+}
+
+interface HandlerContext {
+  // Add any context properties as needed
+}
+
+interface HandlerResponse {
+  statusCode: number
+  body?: string
+  headers?: Record<string, string>
+}
+
+type Handler = (
+  event: HandlerEvent,
+  context: HandlerContext,
+) => Promise<HandlerResponse> | HandlerResponse
 
 interface AIRequest {
   text: string
