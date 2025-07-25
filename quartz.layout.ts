@@ -42,6 +42,11 @@ export const sharedPageComponents: SharedLayout = {
       condition: (page) => page.fileData.slug === "index",
     }),
     Component.TagList(),
+    Component.AIWritingAssistant({
+      features: ["grammar", "style", "suggestions", "completion"],
+      provider: "mock",
+      position: "floating",
+    }),
   ],
   footer: Component.Footer({
     links: {
@@ -66,7 +71,12 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Flex({
       components: [
         {
-          Component: Component.Search(),
+          Component: Component.AISearch({
+            enablePreview: true,
+            searchMode: "hybrid",
+            enableExplanations: true,
+            maxResults: 8,
+          }),
           grow: true,
         },
         { Component: Component.Darkmode() },
@@ -119,6 +129,16 @@ export const defaultContentPageLayout: PageLayout = {
       }),
       condition: (page) => page.fileData.slug !== "index",
     }),
+    Component.ConditionalRender({
+      component: Component.AIRecommendations({
+        mode: "personalized",
+        explanations: true,
+        maxItems: 5,
+        title: "Recommended for You",
+        showDescription: true,
+      }),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
   ],
 }
 
@@ -131,7 +151,12 @@ export const defaultListPageLayout: PageLayout = {
     Component.Flex({
       components: [
         {
-          Component: Component.Search(),
+          Component: Component.AISearch({
+            enablePreview: true,
+            searchMode: "hybrid",
+            enableExplanations: true,
+            maxResults: 8,
+          }),
           grow: true,
         },
         { Component: Component.Darkmode() },

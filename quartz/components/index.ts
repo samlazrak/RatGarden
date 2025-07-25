@@ -15,6 +15,10 @@ import TagList from "./TagList"
 import Graph from "./Graph"
 import Backlinks from "./Backlinks"
 import Search from "./Search"
+import AISearch from "./AISearch"
+import AIRecommendations from "./AIRecommendations"
+import AIWritingAssistant from "./AIWritingAssistant"
+import InteractiveAIDemo from "./InteractiveAIDemo"
 import Footer from "./Footer"
 import DesktopOnly from "./DesktopOnly"
 import MobileOnly from "./MobileOnly"
@@ -50,6 +54,10 @@ export {
   Graph,
   Backlinks,
   Search,
+  AISearch,
+  AIRecommendations,
+  AIWritingAssistant,
+  InteractiveAIDemo,
   Footer,
   DesktopOnly,
   MobileOnly,
