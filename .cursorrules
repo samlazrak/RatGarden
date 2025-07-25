@@ -1,0 +1,44 @@
+# Cursor Rules for RatGarden
+
+## Project Context
+This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. The project uses TypeScript, Preact, SCSS, and Markdown content.
+
+## Code Style & Standards
+- Use TypeScript with strict type checking
+- Use Preact instead of React for all components
+- Follow existing code patterns and file organization
+- Use SCSS for styling with CSS custom properties
+- Implement proper error boundaries and loading states
+- Write comprehensive unit tests for all new code
+
+## File Organization
+- Components: `quartz/components/` with styles in `quartz/components/styles/`
+- Scripts: `quartz/components/scripts/` for inline scripts
+- Content: `content/` directory with appropriate subdirectories
+- Tests: `tests/` directory or alongside components
+
+## Development Workflow
+- Always run `npm run dev` for development
+- Use `npm run test` to run tests
+- Use `npm run check` for type checking and formatting
+- Follow TDD methodology - write tests first
+
+## Key Technologies
+- Node.js v22+, npm v10.9.2+
+- TypeScript with JSX (Preact)
+- SCSS with CSS custom properties
+- Markdown with frontmatter
+- Custom build system with esbuild
+
+## Important Notes
+- Site uses Preact for smaller bundle size
+- Graph link generation runs before each build
+- Hot reload via WebSocket connections
+- Deployed at garden.samlazrak.com
+
+## Testing Requirements
+- Write unit tests first (TDD)
+- Include comprehensive error handling
+- Validate all user inputs
+- Mock external dependencies
+- Test happy paths, edge cases, and error conditions 

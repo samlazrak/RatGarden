@@ -50,6 +50,11 @@ npm install
 
 # Start development server
 npm run dev
+
+# Start development server with draft posts included
+npm run dev-with-drafts
+# or use the shell script
+./scripts/dev-with-drafts.sh
 ```
 
 Visit `http://localhost:8080` to see your digital garden.
@@ -130,6 +135,27 @@ Component.AIWritingAssistant({
 - **TypeScript**: Type-safe development experience
 - **SCSS**: Advanced styling with variables and mixins
 - **WebAssembly**: For running AI models in the browser
+
+## Draft Management
+
+By default, posts marked with `draft: true` in their frontmatter are excluded from the build. For local development, you can include all drafts using:
+
+```bash
+# Full development workflow with drafts
+npm run dev-with-drafts
+
+# Quick serve with drafts (if already built)
+npm run serve-with-drafts
+
+# Using the shell script
+./scripts/dev-with-drafts.sh
+```
+
+You can also set the environment variable manually:
+```bash
+export QUARTZ_INCLUDE_DRAFTS=true
+npm run dev
+```
 
 ## Performance
 
