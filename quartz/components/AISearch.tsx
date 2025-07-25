@@ -53,12 +53,15 @@ export default ((userOpts?: Partial<AISearchOptions>) => {
               <div class="search-modes">
                 <button class="mode-button" data-mode="keyword" title="Keyword Search">
                   <span class="mode-icon">🔤</span>
+                  <span class="mode-label">Keyword</span>
                 </button>
                 <button class="mode-button active" data-mode="hybrid" title="Hybrid Search">
                   <span class="mode-icon">🔀</span>
+                  <span class="mode-label">Hybrid</span>
                 </button>
                 <button class="mode-button" data-mode="semantic" title="Semantic Search">
                   <span class="mode-icon">🧠</span>
+                  <span class="mode-label">Semantic</span>
                 </button>
               </div>
             </div>
