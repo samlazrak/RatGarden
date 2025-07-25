@@ -9,13 +9,14 @@ tags:
   - innovation
 description: "Discover how AI transforms the digital garden experience with semantic search, personalized recommendations, writing assistance, and interactive demos."
 featured: true
+draft: true
 ---
 
 Today I'm excited to showcase the comprehensive AI features that power this digital garden. These aren't just technical experiments – they're practical tools designed to enhance how you discover, create, and interact with content.
 
 ## 🔍 AI-Powered Semantic Search
 
-Gone are the days of keyword-only search. Our new semantic search understands context and meaning:
+Gone are the days of keyword-only search. The new semantic search understands context and meaning:
 
 - **Hybrid Search Modes**: Switch between keyword, semantic, and hybrid search
 - **Real-time Embeddings**: Content is vectorized for similarity matching
@@ -36,7 +37,7 @@ All personalization happens locally in your browser – your data never leaves y
 
 ## ✍️ AI Writing Assistant
 
-Transform your writing with our floating AI assistant:
+Transform your writing with the floating AI assistant:
 
 - **Grammar & Style Check**: Real-time suggestions for clarity
 - **Content Suggestions**: Get ideas to expand your thoughts
@@ -47,13 +48,13 @@ Access it anytime via the floating button in the corner!
 
 ## 🎮 Interactive AI Demos
 
-Experience AI capabilities firsthand with our browser-based demos:
+Experience AI capabilities firsthand with these browser-based demos:
 
 - **Sentiment Analysis**: Understand emotional tone in text
 - **Image Classification**: See computer vision in action  
 - **Text Generation**: Create content with AI assistance
 
-Visit [[demos/ai-interactive-demos|our demo gallery]] to try them yourself!
+Visit [[demos/ai-interactive-demos|the demo gallery]] to try them yourself!
 
 ## 🏗️ Technical Architecture
 

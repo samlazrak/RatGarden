@@ -10,19 +10,20 @@ tags:
   - projects
 description: "Exploring the cutting-edge computer vision projects I've worked on using NVIDIA's powerful GPU ecosystem, from real-time object detection to advanced neural rendering techniques."
 featured: true
+draft: true
 ---
 
 Over the past few years, I've had the incredible opportunity to work on various computer vision projects leveraging NVIDIA's GPU ecosystem. From real-time object detection to neural rendering, these projects have pushed the boundaries of what's possible with modern AI.
 
 ## Real-Time Object Detection with TensorRT
 
-One of my most impactful projects involved optimizing a YOLOv8 model for real-time detection in industrial settings. Using NVIDIA's TensorRT, we achieved:
+One of my most impactful projects involved optimizing a YOLOv8 model for real-time detection in industrial settings. Using NVIDIA's TensorRT, I achieved:
 
 - **95% reduction** in inference time (from 50ms to 2.5ms per frame)
 - **4K resolution** processing at 60 FPS on a single RTX 4090
 - **INT8 quantization** with minimal accuracy loss (<1% mAP drop)
 
-The key breakthrough came from implementing custom CUDA kernels for our specific use case, which eliminated unnecessary memory transfers and maximized GPU utilization.
+The key breakthrough came from implementing custom CUDA kernels for the specific use case, which eliminated unnecessary memory transfers and maximized GPU utilization.
 
 ```python
 # Example TensorRT optimization pipeline
@@ -43,7 +44,7 @@ def optimize_model(onnx_path, precision='fp16'):
 
 ## Neural Radiance Fields on Mobile GPUs
 
-Working with NVIDIA's mobile GPU team, I contributed to bringing NeRF technology to edge devices. Our implementation on Jetson Orin achieved:
+Working with NVIDIA's mobile GPU team, I contributed to bringing NeRF technology to edge devices. The implementation on Jetson Orin achieved:
 
 - Real-time rendering (30 FPS) of complex 3D scenes
 - 80% memory footprint reduction through novel compression

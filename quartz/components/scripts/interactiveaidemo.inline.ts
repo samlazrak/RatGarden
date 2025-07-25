@@ -50,12 +50,49 @@ class InteractiveAIDemo {
     this.isModelLoading = true
     
     try {
-      // In a real implementation, we would load the model using Transformers.js
-      // For demo purposes, we'll simulate model loading
-      await this.simulateModelLoading()
-      
-      this.model = { loaded: true }
-      this.updateStatus("ready", "Model loaded")
+      // Try to load real model using Web Worker
+      if (this.modelSource === "huggingface" && typeof Worker !== "undefined") {
+        this.updateStatus("loading", "Initializing AI model...")
+        
+        // Create worker for background model loading
+        const worker = new Worker("/static/ai-demo-worker.js")
+        
+        // Set up worker message handling
+        const modelLoaded = new Promise((resolve, reject) => {
+          worker.onmessage = (event) => {
+            const { type, message, progress } = event.data
+            
+            switch (type) {
+              case "status":
+                this.updateStatus("loading", message)
+                break
+              case "progress":
+                this.updateStatus("loading", message || `Loading: ${Math.round(progress * 100)}%`)
+                break
+              case "modelLoaded":
+                resolve(worker)
+                break
+              case "error":
+                reject(new Error(event.data.error))
+                break
+            }
+          }
+        })
+        
+        // Load appropriate model based on demo type
+        const modelConfig = this.getModelConfig()
+        worker.postMessage({
+          type: "loadModel",
+          data: modelConfig
+        })
+        
+        this.model = await modelLoaded
+        this.updateStatus("ready", "Model loaded")
+      } else {
+        // Fall back to static demo
+        this.updateStatus("ready", "Using demo mode")
+        this.model = { loaded: true, isStatic: true }
+      }
     } catch (error) {
       console.error("Failed to load model:", error)
       
@@ -63,12 +100,38 @@ class InteractiveAIDemo {
         this.updateStatus("ready", "Using API fallback")
       } else if (this.fallbackBehavior === "static") {
         this.updateStatus("ready", "Using static demo")
+        this.model = { loaded: true, isStatic: true }
       } else {
         this.updateStatus("error", "Model loading failed")
         this.disableDemo("Failed to load the AI model. Please try again later.")
       }
     } finally {
       this.isModelLoading = false
+    }
+  }
+  
+  private getModelConfig() {
+    switch (this.demoType) {
+      case "nlp":
+        return {
+          task: "sentiment-analysis",
+          model: "Xenova/distilbert-base-uncased-finetuned-sst-2-english"
+        }
+      case "vision":
+        return {
+          task: "image-classification",
+          model: "Xenova/vit-base-patch16-224"
+        }
+      case "generative":
+        return {
+          task: "text-generation",
+          model: "Xenova/gpt2"
+        }
+      default:
+        return {
+          task: "sentiment-analysis",
+          model: "Xenova/distilbert-base-uncased-finetuned-sst-2-english"
+        }
     }
   }
   
@@ -180,48 +243,72 @@ class InteractiveAIDemo {
   }
   
   private async runModelInference(input: string | File): Promise<ModelOutput> {
-    // Simulate model inference
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    if (this.demoType === "nlp") {
-      return {
-        type: "classification",
-        data: {
-          label: "POSITIVE",
-          score: 0.9876,
-          scores: [
-            { label: "POSITIVE", score: 0.9876 },
-            { label: "NEGATIVE", score: 0.0124 }
-          ]
-        },
-        confidence: 0.9876
-      }
-    } else if (this.demoType === "vision") {
-      return {
-        type: "classification",
-        data: {
-          label: "cat",
-          score: 0.923,
-          scores: [
-            { label: "cat", score: 0.923 },
-            { label: "dog", score: 0.045 },
-            { label: "bird", score: 0.032 }
-          ]
-        },
-        confidence: 0.923
-      }
-    } else if (this.demoType === "generative") {
-      const prompt = input as string
-      return {
-        type: "generation",
-        data: {
-          text: `${prompt} where AI and nature coexist in perfect harmony. The digital garden bloomed with algorithmic flowers, each petal a neural network learning from the sun's rays.`,
-          prompt: prompt
+    // Check if we have a real model loaded
+    if (this.model && this.model.postMessage) {
+      // Use real model via worker
+      return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error("Model inference timeout"))
+        }, 30000) // 30 second timeout
+        
+        this.model.onmessage = (event: MessageEvent) => {
+          clearTimeout(timeout)
+          const { type, data, error } = event.data
+          
+          if (type === "result") {
+            // Format response based on demo type
+            if (this.demoType === "nlp") {
+              const scores = data.map((item: any) => ({
+                label: item.label,
+                score: item.score
+              }))
+              resolve({
+                type: "classification",
+                data: {
+                  label: scores[0].label,
+                  score: scores[0].score,
+                  scores: scores
+                },
+                confidence: scores[0].score
+              })
+            } else if (this.demoType === "vision") {
+              const topScores = data.slice(0, 5).map((item: any) => ({
+                label: item.label,
+                score: item.score
+              }))
+              resolve({
+                type: "classification",
+                data: {
+                  label: topScores[0].label,
+                  score: topScores[0].score,
+                  scores: topScores
+                },
+                confidence: topScores[0].score
+              })
+            } else if (this.demoType === "generative") {
+              resolve({
+                type: "generation",
+                data: {
+                  text: data[0].generated_text,
+                  prompt: input as string
+                }
+              })
+            }
+          } else if (type === "error") {
+            reject(new Error(error))
+          }
         }
-      }
+        
+        // Send inference request to worker
+        this.model.postMessage({
+          type: "runInference",
+          data: { input }
+        })
+      })
+    } else {
+      // Fall back to static demo
+      return this.runStaticDemo(input)
     }
-    
-    return { type: "visualization", data: {} }
   }
   
   private async runAPIInference(input: string | File): Promise<ModelOutput> {
