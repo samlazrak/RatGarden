@@ -5,7 +5,7 @@ echo "📊 Daily Efficiency Report"
 echo "=========================="
 
 # Run efficiency report
-node scripts/token-efficiency-tracker.cjs report
+node scripts/claude/token-efficiency-tracker.cjs report
 
 echo ""
 echo "🎯 Today's Optimization Goals"
@@ -20,7 +20,7 @@ if [ "$RECENT_USAGE" -gt 0 ]; then
 else
     echo "⚠️  No token usage tracked today"
     echo "💡 Remember to track your Claude usage:"
-    echo "   node scripts/token-efficiency-tracker.cjs track \"task description\" tokens_used tokens_saved method sub_agent"
+    echo "   node scripts/claude/token-efficiency-tracker.cjs track \"task description\" tokens_used tokens_saved method sub_agent"
 fi
 
 echo ""
@@ -36,4 +36,4 @@ echo "📋 Quick Commands:"
 echo "  claude --print \"your prompt\"                    # Quick tasks"
 echo "  claude --model sonnet \"complex reasoning\"       # Complex tasks"
 echo "  claude --model opus \"medical content\"           # Medical/Research"
-echo "  node scripts/token-efficiency-tracker.cjs report  # Efficiency report" 
+echo "  node scripts/claude/token-efficiency-tracker.cjs report  # Efficiency report" 
