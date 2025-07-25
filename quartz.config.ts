@@ -87,6 +87,13 @@ const config: QuartzConfig = {
         enableSiteMap: true,
         enableRSS: true,
       }),
+      Plugin.AISearchIndex({
+        generateEmbeddings: true,
+        embeddingModel: "use",
+        indexFormat: "json",
+        chunkSize: 512,
+        overlap: 128,
+      }),
       Plugin.Assets(),
       Plugin.Static(),
       Plugin.Favicon(),
