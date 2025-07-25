@@ -7,6 +7,7 @@ tags:
   - technical
   - guide
 description: "Complete technical documentation for all AI-powered features in the Rat's Garden, including implementation details, configuration options, and usage guidelines."
+draft: true
 ---
 
 # AI Features Documentation
@@ -446,4 +447,4 @@ Planned features:
 
 ---
 
-For questions or contributions, see our [GitHub repository](https://github.com/samlazrak/RatGarden).
+For questions or contributions, see the [GitHub repository](https://github.com/samlazrak/RatGarden).

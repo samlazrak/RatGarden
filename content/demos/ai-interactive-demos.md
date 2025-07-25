@@ -7,13 +7,14 @@ tags:
   - interactive
   - machine-learning
 description: "Experience AI in action with these interactive demos showcasing natural language processing, computer vision, and text generation capabilities."
+draft: true
 ---
 
-Welcome to our interactive AI demo gallery! These demos run directly in your browser, showcasing various AI capabilities without requiring any setup or installation.
+Welcome to the interactive AI demo gallery! These demos run directly in your browser, showcasing various AI capabilities without requiring any setup or installation.
 
 ## Natural Language Processing
 
-Analyze the sentiment and emotional tone of any text using our NLP model:
+Analyze the sentiment and emotional tone of any text using this NLP model:
 
 {{< InteractiveAIDemo demoType="nlp" >}}
 
@@ -25,7 +26,7 @@ Upload an image and see how AI classifies it:
 
 {{< InteractiveAIDemo demoType="vision" >}}
 
-Our vision model can recognize thousands of different objects, animals, and scenes. Try uploading various images to see how it performs!
+The vision model can recognize thousands of different objects, animals, and scenes. Try uploading various images to see how it performs!
 
 ## Text Generation
 
@@ -71,4 +72,4 @@ Model sizes range from 20MB to 200MB and are cached after first use.
 
 ---
 
-*These demos are part of our AI-enhanced digital garden. Explore more AI features like [[tools/AI-Semantic-Links|semantic search]] and [[blog/ai-features-showcase|content recommendations]].*
+*These demos are part of my AI-enhanced digital garden. Explore more AI features like [[tools/AI-Semantic-Links|semantic search]] and [[blog/ai-features-showcase|content recommendations]].*

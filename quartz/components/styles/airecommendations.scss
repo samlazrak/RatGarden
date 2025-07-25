@@ -10,6 +10,8 @@ $fullPageWidth: 1200px !default;
   border-radius: 8px;
   padding: 1rem;
   margin: 1rem 0;
+  width: 100%;
+  box-sizing: border-box;
 
   .recommendations-header {
     display: flex;

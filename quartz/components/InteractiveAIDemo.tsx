@@ -1,6 +1,11 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import style from "./styles/interactiveaidemo.scss"
-import script from "./scripts/interactiveaidemo.inline"
+// Use simpler implementation for better reliability
+const script = `
+  const script = document.createElement('script');
+  script.src = '/static/simple-ai-demo.js';
+  document.head.appendChild(script);
+`
 import { classNames } from "../util/lang"
 
 export interface InteractiveAIDemoOptions {
