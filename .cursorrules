@@ -71,3 +71,11 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 - Validate all user inputs
 - Mock external dependencies
 - Test happy paths, edge cases, and error conditions
+
+## Linter Error Handling
+
+- **Maximum 3 attempts** to fix linter errors on the same file
+- If linter errors persist after 3 attempts, stop and ask the user for guidance
+- Do not make uneducated guesses about linter error fixes
+- Focus on clear, obvious fixes rather than complex type system changes
+- When hitting the limit, provide a summary of the remaining issues to the user
