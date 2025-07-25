@@ -29,19 +29,19 @@ GEMINI_API_KEY=your_actual_gemini_api_key_here
 
 ### For Production Deployment
 
+#### Netlify (Recommended)
+
+1. Go to your Netlify site dashboard
+2. Navigate to Site settings → Environment variables
+3. Add `GEMINI_API_KEY` with your API key value
+4. Deploy your project - the Netlify function will automatically handle API requests
+
 #### Vercel
 
 1. Go to your Vercel project dashboard
 2. Navigate to Settings → Environment Variables
 3. Add `GEMINI_API_KEY` with your API key value
 4. Deploy your project
-
-#### Netlify
-
-1. Go to your Netlify site dashboard
-2. Navigate to Site settings → Environment variables
-3. Add `GEMINI_API_KEY` with your API key value
-4. Trigger a new deployment
 
 #### Other Platforms
 
@@ -101,9 +101,34 @@ If Gemini is unavailable, the system will automatically fall back to:
 2. Anthropic (if configured)
 3. Mock responses (for demo purposes)
 
+## Implementation Details
+
+### Netlify Function
+
+The AI assistant uses a Netlify serverless function located at `netlify/functions/ai-assistant.ts`:
+
+- **TypeScript**: Fully typed for better development experience
+- **Multi-Provider Support**: Automatically falls back between Gemini, OpenAI, and Anthropic
+- **Cost Optimization**: Uses appropriate models based on task complexity
+- **Error Handling**: Comprehensive error handling with fallback responses
+
+### API Endpoint
+
+The function is accessible at `/api/ai-assistant` and accepts:
+
+```typescript
+{
+  text: string,
+  feature: "grammar" | "style" | "suggestions" | "completion" | "summarize",
+  provider?: "gemini" | "openai" | "anthropic",
+  context?: string
+}
+```
+
 ## Security Notes
 
 - Never commit your `.env` file to version control
 - The `.env` file is already in `.gitignore`
-- API keys are only used server-side in edge functions
+- API keys are only used server-side in Netlify functions
 - No API keys are exposed to the client-side code
+- All API calls are proxied through the secure Netlify function

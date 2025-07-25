@@ -1,43 +1,104 @@
-// Multi-Provider AI Assistant API for RatGarden
-// Supports OpenAI, Anthropic, and Gemini APIs
+import type { Handler, HandlerContext, HandlerEvent } from "@netlify/functions"
 
-export const config = {
-  runtime: "edge",
+interface AIRequest {
+  text: string
+  feature: "grammar" | "style" | "suggestions" | "completion" | "summarize"
+  provider?: "gemini" | "openai" | "anthropic"
+  context?: string
+}
+
+interface AIResponse {
+  corrections?: Array<{
+    text: string
+    replacement: string
+    reason: string
+    type: string
+  }>
+  suggestions?: string[]
+  completion?: string
+  summary?: string
+  key_points?: string[]
+  score?: {
+    grammar: number
+    clarity: number
+    engagement: number
+  }
+  error?: string
+  raw_response?: string
+  feature?: string
+}
+
+interface GeminiResponse {
+  candidates?: Array<{
+    content: {
+      parts: Array<{
+        text: string
+      }>
+    }
+  }>
+}
+
+interface OpenAIResponse {
+  choices: Array<{
+    message: {
+      content: string
+    }
+  }>
+}
+
+interface AnthropicResponse {
+  content: Array<{
+    text: string
+  }>
 }
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
-export default async function handler(req) {
+export const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   // CORS headers
-  if (req.method === "OPTIONS") {
-    return new Response(null, {
-      status: 200,
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },
-    })
+    }
   }
 
-  if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 })
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: "Method not allowed" }),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    }
   }
 
   // Check if at least one API key is configured
   if (!OPENAI_API_KEY && !ANTHROPIC_API_KEY && !GEMINI_API_KEY) {
-    return new Response(JSON.stringify({ error: "No API keys configured" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    })
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "No API keys configured" }),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    }
   }
 
   try {
-    const { text, feature, provider = "gemini", context } = await req.json()
-
-    // Simple rate limiting check could go here
+    const {
+      text,
+      feature,
+      provider = "gemini",
+      context,
+    }: AIRequest = JSON.parse(event.body || "{}")
 
     // Determine which provider to use based on available API keys
     let selectedProvider = provider
@@ -45,32 +106,44 @@ export default async function handler(req) {
       if (OPENAI_API_KEY) selectedProvider = "openai"
       else if (ANTHROPIC_API_KEY) selectedProvider = "anthropic"
       else {
-        return new Response(JSON.stringify({ error: "No API keys configured" }), {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        })
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "No API keys configured" }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       }
     } else if (provider === "openai" && !OPENAI_API_KEY) {
       if (GEMINI_API_KEY) selectedProvider = "gemini"
       else if (ANTHROPIC_API_KEY) selectedProvider = "anthropic"
       else {
-        return new Response(JSON.stringify({ error: "OpenAI API key not configured" }), {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        })
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "OpenAI API key not configured" }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       }
     } else if (provider === "anthropic" && !ANTHROPIC_API_KEY) {
       if (GEMINI_API_KEY) selectedProvider = "gemini"
       else if (OPENAI_API_KEY) selectedProvider = "openai"
       else {
-        return new Response(JSON.stringify({ error: "Anthropic API key not configured" }), {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        })
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "Anthropic API key not configured" }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       }
     }
 
-    let aiResponse
+    let aiResponse: AIResponse
 
     switch (selectedProvider) {
       case "gemini":
@@ -83,33 +156,43 @@ export default async function handler(req) {
         aiResponse = await callAnthropicAPI(text, feature, context)
         break
       default:
-        return new Response(JSON.stringify({ error: "Unsupported provider" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: "Unsupported provider" }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
     }
 
-    return new Response(JSON.stringify(aiResponse), {
-      status: 200,
+    return {
+      statusCode: 200,
+      body: JSON.stringify(aiResponse),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-    })
+    }
   } catch (error) {
     console.error("AI Assistant error:", error)
-    return new Response(JSON.stringify({ error: "Failed to process request" }), {
-      status: 500,
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Failed to process request" }),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-    })
+    }
   }
 }
 
 // Helper functions for each API provider
-async function callGeminiAPI(text, feature, context = "") {
+async function callGeminiAPI(
+  text: string,
+  feature: string,
+  context: string = "",
+): Promise<AIResponse> {
   const maxTokens = getMaxTokensForFeature(feature)
   const model = getOptimalGeminiModel(feature, text.length)
 
@@ -148,7 +231,7 @@ async function callGeminiAPI(text, feature, context = "") {
     throw new Error(`Gemini API error: ${response.status}`)
   }
 
-  const data = await response.json()
+  const data: GeminiResponse = await response.json()
 
   if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
     throw new Error("Invalid response from Gemini API")
@@ -157,7 +240,7 @@ async function callGeminiAPI(text, feature, context = "") {
   return parseResponse(data.candidates[0].content.parts[0].text, feature)
 }
 
-async function callOpenAIAPI(text, feature) {
+async function callOpenAIAPI(text: string, feature: string): Promise<AIResponse> {
   let prompt = ""
   let model = "gpt-3.5-turbo" // Use cheaper model for cost efficiency
 
@@ -235,11 +318,15 @@ Text: ${text}`
     throw new Error(`OpenAI API error: ${response.status}`)
   }
 
-  const data = await response.json()
+  const data: OpenAIResponse = await response.json()
   return JSON.parse(data.choices[0].message.content)
 }
 
-async function callAnthropicAPI(text, feature, context = "") {
+async function callAnthropicAPI(
+  text: string,
+  feature: string,
+  context: string = "",
+): Promise<AIResponse> {
   const maxTokens = getMaxTokensForFeature(feature)
   const model = getOptimalAnthropicModel(feature, text.length)
 
@@ -250,7 +337,7 @@ async function callAnthropicAPI(text, feature, context = "") {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": ANTHROPIC_API_KEY,
+      "x-api-key": ANTHROPIC_API_KEY!,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
@@ -271,13 +358,13 @@ async function callAnthropicAPI(text, feature, context = "") {
     throw new Error(`Anthropic API error: ${response.status}`)
   }
 
-  const data = await response.json()
+  const data: AnthropicResponse = await response.json()
   return parseResponse(data.content[0].text, feature)
 }
 
 // Utility functions
-function getMaxTokensForFeature(feature) {
-  const tokenLimits = {
+function getMaxTokensForFeature(feature: string): number {
+  const tokenLimits: Record<string, number> = {
     grammar: 300,
     style: 400,
     suggestions: 200,
@@ -288,7 +375,7 @@ function getMaxTokensForFeature(feature) {
   return tokenLimits[feature] || 300
 }
 
-function getOptimalGeminiModel(feature, textLength) {
+function getOptimalGeminiModel(feature: string, textLength: number): string {
   // Use Gemini 1.5 Flash for simple tasks, Gemini 1.5 Pro for complex ones
   if (feature === "medical" || textLength > 2000) {
     return "gemini-1.5-pro"
@@ -296,15 +383,15 @@ function getOptimalGeminiModel(feature, textLength) {
   return "gemini-1.5-flash" // Most cost-effective for simple tasks
 }
 
-function getOptimalAnthropicModel(feature, textLength) {
+function getOptimalAnthropicModel(feature: string, textLength: number): string {
   // Use Haiku for simple tasks, Sonnet for complex ones, Opus for medical
   if (feature === "medical") return "claude-3-5-sonnet-20241022"
   if (textLength > 2000) return "claude-3-5-sonnet-20241022"
   return "claude-3-5-haiku-20241022" // Most cost-effective for simple tasks
 }
 
-function getSystemPrompt(feature) {
-  const prompts = {
+function getSystemPrompt(feature: string): string {
+  const prompts: Record<string, string> = {
     grammar: `You are a grammar and spelling expert. Provide corrections in JSON format with minimal tokens. Focus only on actual errors.`,
     style: `You are a writing style expert. Provide style improvements in JSON format. Be concise and actionable.`,
     suggestions: `You are a content strategist. Provide brief, actionable suggestions in JSON format.`,
@@ -315,7 +402,7 @@ function getSystemPrompt(feature) {
   return prompts[feature] || prompts.grammar
 }
 
-function buildUserPrompt(text, feature, context = "") {
+function buildUserPrompt(text: string, feature: string, context: string = ""): string {
   let prompt = ""
 
   switch (feature) {
@@ -382,7 +469,7 @@ Text: ${text}`
   return prompt
 }
 
-function parseResponse(responseText, feature) {
+function parseResponse(responseText: string, feature: string): AIResponse {
   try {
     // Try to parse as JSON first
     return JSON.parse(responseText)
