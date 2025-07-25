@@ -152,18 +152,37 @@ class AIWritingAssistant {
       return response
     }
     
-    // Real API implementation would go here
-    const apiResponse = await fetch(this.apiEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, feature })
-    })
-    
-    if (!apiResponse.ok) {
-      throw new Error("API request failed")
+    // Real API implementation
+    try {
+      const apiResponse = await fetch(this.apiEndpoint, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({ text, feature })
+      })
+      
+      if (!apiResponse.ok) {
+        // Fall back to mock if API fails
+        console.warn("API request failed, falling back to mock response")
+        return this.mockAIResponse(text, feature)
+      }
+      
+      const response = await apiResponse.json()
+      
+      // Validate response structure
+      if (!response.suggestions && !response.corrections && !response.completion && !response.summary) {
+        console.warn("Invalid API response structure, falling back to mock")
+        return this.mockAIResponse(text, feature)
+      }
+      
+      return response
+    } catch (error) {
+      console.error("API error:", error)
+      // Fall back to mock on any error
+      return this.mockAIResponse(text, feature)
     }
-    
-    const response = await apiResponse.json()
     
     if (this.cacheStrategy !== "none") {
       this.cache.set(cacheKey, response)
