@@ -76,6 +76,7 @@ const config: QuartzConfig = {
       Plugin.Latex({ renderEngine: "katex" }),
       Plugin.Canvas(),
       Plugin.ClickableImages(),
+      Plugin.RunPythonPlugin(),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [

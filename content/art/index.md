@@ -9,7 +9,6 @@ tags: [art, creative, mixed-media, book-arts, computational, visual]
 <!-- Method 1: Comment-based wikilinks -->
 <!-- [[art/My Art]] -->
 <!-- [[art/Ritual - Essential Grimoire]] -->
-<!-- [[blog/ai-features-showcase]] -->
 <!-- [[blog/claude-autopilot-24-7-automated-development]] -->
 <!-- [[blog/clinical-note-templates-digital-implementation]] -->
 <!-- [[blog/nvidia-computer-vision-projects]] -->
@@ -34,7 +33,7 @@ tags: [art, creative, mixed-media, book-arts, computational, visual]
 
 <!-- Method 2: Screen reader accessible but visually hidden -->
 <div aria-hidden="true" style="position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;">
-[[art/My Art]] [[art/Ritual - Essential Grimoire]] [[blog/ai-features-showcase]] [[blog/claude-autopilot-24-7-automated-development]] [[blog/clinical-note-templates-digital-implementation]] [[blog/nvidia-computer-vision-projects]] [[blog/privacy-focused-analytics-implementation]] [[demos/ai-interactive-demos]] [[demos/medical-citations-test]] [[docs/ai-features-documentation]] [[drafts/MediSight-Clinical-Intelligence-Platform]] [[drafts/WatchGuard-Waiting-Room-Intelligence]] [[garden/ai-features-showcase]] [[garden/index]] [[garden/sanitization-system]] [[index]] [[projects/Build Birmingham]] [[projects/index]] [[research/PhD]] [[research/Publications]] [[research/ScribeAI-Clinical-Documentation]] [[research/index]] [[tools/AI Semantic Links]] [[tools/index]]
+[[art/My Art]] [[art/Ritual - Essential Grimoire]] [[blog/claude-autopilot-24-7-automated-development]] [[blog/clinical-note-templates-digital-implementation]] [[blog/nvidia-computer-vision-projects]] [[blog/privacy-focused-analytics-implementation]] [[demos/ai-interactive-demos]] [[demos/medical-citations-test]] [[docs/ai-features-documentation]] [[drafts/MediSight-Clinical-Intelligence-Platform]] [[drafts/WatchGuard-Waiting-Room-Intelligence]] [[garden/ai-features-showcase]] [[garden/index]] [[garden/sanitization-system]] [[index]] [[projects/Build Birmingham]] [[projects/index]] [[research/PhD]] [[research/Publications]] [[research/ScribeAI-Clinical-Documentation]] [[research/index]] [[tools/AI Semantic Links]] [[tools/index]]
 </div>
 
 <!-- Method 3: Zero-width inline links -->
@@ -64,6 +63,7 @@ I'm fascinated by how algorithms can become brushes and data can become pigment.
 ## Themes
 
 My work often explores:
+
 - The relationship between information and physical form
 - Historical continuities in knowledge transmission
 - The materiality of digital culture
@@ -78,4 +78,4 @@ My work often explores:
 
 ---
 
-*Art serves as a space for experimentation and reflection, allowing for exploration of ideas that transcend disciplinary boundaries and engage with fundamental questions about knowledge, experience, and expression.*
+_Art serves as a space for experimentation and reflection, allowing for exploration of ideas that transcend disciplinary boundaries and engage with fundamental questions about knowledge, experience, and expression._
