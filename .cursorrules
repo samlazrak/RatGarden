@@ -51,9 +51,18 @@ This is a Quartz 4 static site generator for "The Rat's Garden" digital garden. 
 
 - **Private Repository**: Contains all content, build artifacts, and development files
 - **Public Repository**: Source code only - no content, no build artifacts, no private files
-- **Sanitization**: Use `npm run push-public` to sanitize and push to public repo
 - **Excluded from Public**: content/, public/, scripts/, docs/, tests/, .claude/, .vscode/, .github/, .quartz-cache/, runner.sh, runneroutput.log, CLAUDE.md, .cursorrules, vercel.json, system files, generic Quartz documentation
 - **Git LFS**: Large files (videos, images, JSON) are handled by Git LFS for faster pushes
+
+## Git Operations - STRICT RULES
+
+- **NEVER make git commits automatically** - only suggest commits to the user
+- **NEVER push code automatically** - only suggest pushes to the user
+- **NEVER run git commands without explicit user approval**
+- **NEVER use sanitization scripts without user approval**
+- **ALWAYS ask for permission before any git operations**
+- **ONLY suggest changes and let the user execute them manually**
+- **If git operations are needed, provide the exact commands for the user to run**
 
 ## Testing Requirements
 
