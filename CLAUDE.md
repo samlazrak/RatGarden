@@ -2,15 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🚨 MANDATORY: Pre-Session Checklist
+## 🧠 Core Development Principles
 
-**BEFORE RESPONDING TO ANY QUERY**, you MUST:
+**KEY PRINCIPLES**:
 
-1. **Check `.claude/pre-inputs.md` FIRST** - Contains task completion status
-2. **If `completed: false`** - Task is TOP PRIORITY, wait for user details
-3. **If `completed: true`** - Proceed with user query
-4. **Use sub-agents** for specialized tasks
-5. **Separate planning from implementation**
+1. **Use sub-agents** for specialized tasks
+2. **Separate planning from implementation**
 
 ## 🧠 Core Efficiency Principle: Planning vs Implementation Separation
 
@@ -72,6 +69,7 @@ This is a **Quartz 4** static site generator project for "The Rat's Garden" - a 
 - `npm run claude-setup` - Setup Claude Code environment
 - `npm run claude-mcp` - Setup MCP servers
 - `npm run claude-init` - Initialize knowledge base
+- `npm run claude-autopilot-setup` - Setup and configure Claude Autopilot integration
 
 ## Architecture Overview
 
@@ -257,7 +255,6 @@ The site uses carefully configured plugins for:
 - **Minimum 25% token savings** through optimization
 - **90% pattern reuse** for common tasks
 - **80% sub-agent utilization** for specialized work
-- **100% pre-inputs.md compliance**
 - **100% planning/implementation separation**
 
 ## Warning System
@@ -271,3 +268,63 @@ The site uses carefully configured plugins for:
 - **Not separating planning from implementation**
 
 **REMEMBER**: Every token saved is value preserved for future high-impact work. Efficiency is mandatory for maximum subscription value. The planning/implementation separation is key to maximum efficiency.
+
+## Claude Autopilot Integration
+
+### Overview
+
+**Claude Autopilot** is a VS Code extension that enables 24/7 automated Claude Code task processing. It allows you to queue hundreds of tasks and let Claude work autonomously while you sleep, eat, or spend time with family.
+
+### Key Features
+
+- **24/7 Automated Processing**: Queue tasks and let Claude Autopilot work autonomously
+- **Auto-Resume**: Automatically resumes when Claude usage limits reset
+- **Sleep Prevention**: Keeps computer awake during overnight processing
+- **Smart Queue Management**: Processes multiple tasks with intelligent queueing
+- **Cross-Platform**: Works on Windows, macOS, and Linux
+- **IDE Compatibility**: Full support for VS Code and Cursor
+
+### Setup and Installation
+
+1. **Prerequisites**: Ensure Claude Code, Python 3.8+, VS Code/Cursor, and Node.js 22+ are installed
+2. **Run Setup**: `npm run claude-autopilot-setup` - automated setup script that checks dependencies
+3. **Install Extension**: Install Claude Autopilot from VS Code Marketplace or manually install VSIX
+4. **Quick Start**: See `CLAUDE-AUTOPILOT-QUICKSTART.md` for detailed instructions
+
+### Commands
+
+- `Claude: Start Claude Autopilot` - Start the interface and session
+- `Claude: Stop Claude Autopilot` - Stop processing and close session
+- `Claude: Add Message to Queue` - Add new task to processing queue
+
+### Integration with RatGarden
+
+- **Automated Testing**: Queue comprehensive test generation for AI components
+- **TypeScript Conversion**: Convert remaining JavaScript files to TypeScript
+- **Documentation Updates**: Generate and update project documentation
+- **Code Review**: Automated code review and optimization
+- **Accessibility**: Add accessibility improvements across components
+- **SCSS Refactoring**: Modernize styling and improve maintainability
+
+### Configuration Files
+
+- `.claude-autopilot-queue.json` - Task queue configuration (auto-generated)
+- `.vscode/extensions.json` - Extension recommendations
+- `.vscode/settings.json` - Claude Autopilot settings
+- `.vscode/tasks.json` - Task definitions
+- `Claude-Autopilot/` - Full extension source code and documentation
+
+### Best Practices
+
+- **Queue Management**: Add related tasks in batches for better context
+- **Priority Setting**: Use high/medium/low priorities to organize work
+- **Monitoring**: Check VS Code Output panel and processing history
+- **Safety**: Only use in trusted development environments
+- **Resource Management**: Ensure adequate disk space and memory for long runs
+
+### Troubleshooting
+
+- **Claude Code Not Found**: Ensure Claude Code is in PATH, restart VS Code
+- **Python Issues**: Install Python 3.8+, ensure it's in PATH
+- **Permission Errors**: Extension uses `--dangerously-skip-permissions` for automation
+- **Processing Failures**: Check logs in VS Code Output panel for detailed error information

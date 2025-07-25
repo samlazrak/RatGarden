@@ -1,5 +1,5 @@
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import readingProgressStyle from "./styles/readingProgress.scss"
+import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
 export interface Options {
   showProgressBar: boolean
@@ -24,18 +24,15 @@ const defaultOptions: Options = {
 export default ((opts?: Partial<Options>) => {
   const options = { ...defaultOptions, ...opts }
 
-  const ReadingProgress: QuartzComponent = ({ 
-    displayClass, 
-    fileData, 
-    allFiles, 
-    ctx 
-  }: QuartzComponentProps) => {
-    
+  const ReadingProgress: QuartzComponent = ({ displayClass, fileData }: QuartzComponentProps) => {
     // Calculate reading statistics
     const content = fileData.text || ""
-    const wordCount = content.trim().split(/\s+/).filter(word => word.length > 0).length
+    const wordCount = content
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length
     const estimatedReadingTime = Math.ceil(wordCount / options.wordsPerMinute)
-    
+
     // Don't show for short content if the option is enabled
     if (options.showOnlyOnLongContent && wordCount < options.minWordsForDisplay) {
       return null
@@ -123,19 +120,15 @@ export default ((opts?: Partial<Options>) => {
             <div class="reading-progress-fill"></div>
             <div class="reading-progress-content">
               {options.showReadingTime && (
-                <span class="reading-time">
-                  📖 {formatReadingTime(estimatedReadingTime)}
-                </span>
+                <span class="reading-time">📖 {formatReadingTime(estimatedReadingTime)}</span>
               )}
               {options.showTimeRemaining && (
-                <span class="time-remaining">
-                  {formatReadingTime(estimatedReadingTime)} left
-                </span>
+                <span class="time-remaining">{formatReadingTime(estimatedReadingTime)} left</span>
               )}
             </div>
           </div>
         )}
-        
+
         {/* Inline script for progress tracking */}
         <script dangerouslySetInnerHTML={{ __html: progressBarScript }} />
       </div>

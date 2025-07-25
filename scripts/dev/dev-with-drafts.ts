@@ -3,7 +3,7 @@ import { ConsoleLogger, Logger } from "../utils/logger"
 
 interface DevServerConfig {
   logger?: Logger
-  includeDrafts?: boolean
+  includePrivate?: boolean
 }
 
 export class DevServer {
@@ -16,14 +16,14 @@ export class DevServer {
   }
 
   async start(): Promise<void> {
-    this.logger.info("🚀 Starting development server with drafts enabled...")
-    this.logger.info('📝 All posts marked with "draft: true" will be visible')
+    this.logger.info("🚀 Starting development server with private content enabled...")
+    this.logger.info('📝 All posts marked with "private: true" will be visible')
     this.logger.info("")
 
     try {
       // Set environment variable
-      if (this.config.includeDrafts !== false) {
-        process.env.QUARTZ_INCLUDE_DRAFTS = "true"
+      if (this.config.includePrivate !== false) {
+        process.env.QUARTZ_INCLUDE_PRIVATE = "true"
       }
 
       // Run the full development workflow
@@ -47,7 +47,7 @@ export class DevServer {
 
 // CLI entry point
 async function main(): Promise<void> {
-  const server = new DevServer({ includeDrafts: true })
+  const server = new DevServer({ includePrivate: true })
   await server.start()
 }
 

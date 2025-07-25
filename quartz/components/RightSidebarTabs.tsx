@@ -1,8 +1,8 @@
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import SemanticLinks from "./SemanticLinks"
 import Backlinks from "./Backlinks"
-import rightSidebarTabsStyle from "./styles/rightSidebarTabs.scss"
+import SemanticLinks from "./SemanticLinks"
 import script from "./scripts/sidebarTabs.inline"
+import rightSidebarTabsStyle from "./styles/rightSidebarTabs.scss"
+import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
 export interface Options {
   defaultTab?: "related" | "backlinks"
@@ -25,17 +25,20 @@ const defaultOptions: Options = {
     showStrength: true,
     showConfidence: false,
     showExplanation: true,
-  }
+  },
 }
 
 export default ((opts?: Partial<Options>) => {
   const options = { ...defaultOptions, ...opts }
 
-  const RightSidebarTabs: QuartzComponent = ({ 
-    displayClass, 
-    fileData, 
-    allFiles, 
-    ctx 
+  const RightSidebarTabs: QuartzComponent = ({
+    displayClass,
+    fileData,
+    allFiles,
+    ctx,
+    externalResources,
+    children,
+    tree,
   }: QuartzComponentProps) => {
     const SemanticLinksComponent = SemanticLinks(options.semanticLinksOptions)
     const BacklinksComponent = Backlinks()
@@ -43,28 +46,46 @@ export default ((opts?: Partial<Options>) => {
     return (
       <div class={`right-sidebar-tabs ${displayClass ?? ""}`}>
         <div class="tab-header">
-          <button 
-            class="tab-button active" 
+          <button
+            class="tab-button active"
             data-tab="related"
-            onclick="switchRightTab('related')"
+            data-onclick="switchRightTab('related')"
           >
             🔗 Related
           </button>
-          <button 
-            class="tab-button" 
+          <button
+            class="tab-button"
             data-tab="backlinks"
-            onclick="switchRightTab('backlinks')"
+            data-onclick="switchRightTab('backlinks')"
           >
             ↩️ Backlinks
           </button>
         </div>
-        
+
         <div class="tab-content">
           <div class="tab-panel active" data-panel="related">
-            <SemanticLinksComponent displayClass={displayClass} fileData={fileData} allFiles={allFiles} ctx={ctx} cfg={ctx.cfg.configuration} />
+            <SemanticLinksComponent
+              displayClass={displayClass}
+              fileData={fileData}
+              allFiles={allFiles}
+              ctx={ctx}
+              externalResources={externalResources}
+              children={children}
+              tree={tree}
+              cfg={ctx.cfg.configuration}
+            />
           </div>
           <div class="tab-panel" data-panel="backlinks">
-            <BacklinksComponent displayClass={displayClass} fileData={fileData} allFiles={allFiles} ctx={ctx} cfg={ctx.cfg.configuration} />
+            <BacklinksComponent
+              displayClass={displayClass}
+              fileData={fileData}
+              allFiles={allFiles}
+              ctx={ctx}
+              externalResources={externalResources}
+              children={children}
+              tree={tree}
+              cfg={ctx.cfg.configuration}
+            />
           </div>
         </div>
       </div>

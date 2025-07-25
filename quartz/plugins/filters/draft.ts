@@ -3,15 +3,15 @@ import { QuartzFilterPlugin } from "../types"
 export const RemoveDrafts: QuartzFilterPlugin<{}> = () => ({
   name: "RemoveDrafts",
   shouldPublish(_ctx, [_tree, vfile]) {
-    // Check if we should include drafts (for local development)
-    const includeDrafts = process.env.QUARTZ_INCLUDE_DRAFTS === "true"
+    // Check if we should include private content (for local development)
+    const includePrivate = process.env.QUARTZ_INCLUDE_PRIVATE === "true"
     
-    if (includeDrafts) {
-      return true // Include all content including drafts
+    if (includePrivate) {
+      return true // Include all content including private
     }
     
-    const draftFlag: boolean =
-      vfile.data?.frontmatter?.draft === true || vfile.data?.frontmatter?.draft === "true"
-    return !draftFlag
+    const privateFlag: boolean =
+      vfile.data?.frontmatter?.private === true || vfile.data?.frontmatter?.private === "true"
+    return !privateFlag
   },
 })
