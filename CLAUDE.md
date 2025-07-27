@@ -44,9 +44,12 @@ This is a **Quartz 4** static site generator project for "The Rat's Garden" - a 
 - `npm run dev` - Full development workflow: generates graph links, kills existing server, builds, and serves with hot reload
 - `npm run build` - Build the static site
 - `npm run serve` - Serve the built site locally
+- `npm run serve-auto` - Serve with automatic port selection
 - `npm run kill` - Kill any process running on port 8080
-- `npm run dev-with-drafts` - Development with draft content included
-- `npm run serve-with-drafts` - Serve with drafts enabled
+- `npm run dev-with-private` - Development with private content included
+- `npm run serve-with-private` - Serve with private content enabled
+- `npm run test-server` - Test server for 15 seconds
+- `npm run test-server-30s` - Test server for 30 seconds
 
 ### Code Quality
 
@@ -59,10 +62,21 @@ This is a **Quartz 4** static site generator project for "The Rat's Garden" - a 
 ### Utility Commands
 
 - `npm run generate-graph-links` - Generate invisible graph links in index.md to improve graph visualization
+- `npm run generate-graph-links-legacy` - Legacy graph link generation method
+- `npm run generate-graph-links-test` - Test different graph link generation methods
 - `npm run docs` - Build and serve documentation from docs folder
 - `npm run clear-semantic-cache` - Clear the semantic link cache
+- `npm run setup-launchagent` - Setup macOS LaunchAgent for automated tasks
+- `npm run cli` - Access CLI utilities for various tasks
+
+### Repository Management
+
 - `npm run sanitize` - Run sanitization process for public repository
+- `npm run test-sanitization` - Test sanitization rules without applying them
 - `npm run push-with-sanitize` - Push changes with automatic sanitization
+
+### Claude Integration
+
 - `npm run claude-daily` - Run daily Claude efficiency tracking
 - `npm run claude-track` - Track token usage for efficiency analysis
 - `npm run claude-report` - Generate efficiency reports
@@ -70,6 +84,10 @@ This is a **Quartz 4** static site generator project for "The Rat's Garden" - a 
 - `npm run claude-mcp` - Setup MCP servers
 - `npm run claude-init` - Initialize knowledge base
 - `npm run claude-autopilot-setup` - Setup and configure Claude Autopilot integration
+
+### Performance
+
+- `npm run profile` - Profile build performance with 0x
 
 ## Architecture Overview
 
@@ -91,47 +109,66 @@ This is a **Quartz 4** static site generator project for "The Rat's Garden" - a 
 
 ### Custom Features
 
-- **AI Components**: AISearch, AIWritingAssistant, InteractiveAIDemo, AIRecommendations, MedicalCitations, PrivacyAnalytics
-- **Graph Link Generation**: `scripts/dev/generate-graph-links.ts` automatically adds invisible wikilinks to index.md
-- **Custom Components**: TwoColumnNotes, HomePageLinks, ConditionalRender, CanvasViewer for enhanced layouts
+- **AI Components**: AISearch, AIWritingAssistant, InteractiveAIDemo, AIRecommendations, MedicalCitations, PrivacyAnalytics with TensorFlow.js integration
+- **Graph Link Generation**: Multiple approaches available:
+  - `scripts/dev/hybrid-graph-links.ts` - Primary method combining multiple strategies
+  - `scripts/dev/generate-graph-links.ts` - Legacy method
+  - `scripts/dev/improved-graph-links.ts` - Enhanced version
+- **Custom Layout Components**: TwoColumnNotes, HomePageLinks, ConditionalRender, CanvasViewer, ReadingProgress
 - **Semantic Link Discovery**: Automatic semantic linking between related content with TensorFlow.js embeddings
 - **Theme Customization**: Custom color schemes and typography in quartz.config.ts
-- **Canvas Support**: Interactive canvas content with Pixi.js integration
+- **Canvas Support**: Interactive canvas content with Pixi.js integration and .canvas file support
+- **Notebook Integration**: Python notebook execution with custom transformer
+- **Privacy-First Analytics**: Plausible integration with custom privacy controls
 
 ## Technical Stack
 
 - **Runtime**: Node.js v22+ with npm v10.9.2+
 - **Language**: TypeScript with JSX (Preact)
-- **Build Tool**: Custom build system with esbuild
+- **Build Tool**: Custom build system with esbuild and Lightning CSS
 - **Styling**: SCSS with CSS custom properties
 - **Content**: Markdown with frontmatter, supports Obsidian/GitHub flavored markdown
-- **Testing**: Vitest with happy-dom for component testing
-- **AI/ML**: TensorFlow.js, Universal Sentence Encoder for semantic search
+- **Testing**: Vitest with happy-dom for component testing, comprehensive coverage reporting
+- **AI/ML**: TensorFlow.js, Universal Sentence Encoder for semantic search and embeddings
 - **Graphics**: Pixi.js for canvas rendering, D3.js for data visualization
 - **Analytics**: Plausible for privacy-focused analytics
+- **Database**: SQLite3 for local caching and semantic data
+- **Deployment**: Netlify with custom functions for AI features
+- **Performance**: Workerpool for parallel processing, async-mutex for concurrency control
 
 ## Plugin Configuration
 
 The site uses carefully configured plugins for:
 
-- **ObsidianFlavoredMarkdown**: Wikilinks and callouts
+### Core Plugins
+- **ObsidianFlavoredMarkdown**: Wikilinks, callouts, and Obsidian syntax support
 - **GitHubFlavoredMarkdown**: Tables, strikethrough, task lists
-- **SyntaxHighlighting**: Code blocks with github-light/dark themes
+- **SyntaxHighlighting**: Code blocks with github-light/dark themes using Shiki
 - **Latex**: Mathematical expressions with KaTeX
-- **TableOfContents**: Automatic TOC generation
-- **Graph**: Interactive knowledge graph visualization
+- **TableOfContents**: Automatic TOC generation with custom styling
+
+### Custom Plugins
 - **AI Search Index**: Enhanced search with AI capabilities using Universal Sentence Encoder
 - **Semantic Link Config/Discovery**: Automated semantic relationships with TensorFlow.js
-- **Canvas**: Interactive canvas content support
-- **Custom OG Images**: Dynamic Open Graph image generation
+- **Canvas**: Interactive canvas content support with .canvas file processing
+- **Notebook**: Python notebook execution and rendering
+- **Citations**: Academic citation support with rehype-citation
+- **Clickable Images**: Enhanced image interaction with zoom and navigation
+- **Custom OG Images**: Dynamic Open Graph image generation with Satori
+
+### Visual Features
+- **Graph**: Interactive knowledge graph visualization with D3.js
+- **Custom Components**: Reading progress, sidebar tabs, conditional rendering
 
 ## Development Workflow
 
-1. Edit content in `content/` directory
-2. Run `npm run dev` to start development server
-3. Changes to content trigger automatic rebuild and browser refresh
-4. Configuration changes require server restart
-5. Use `npm run dev-with-drafts` to include draft content during development
+1. **Content Development**: Edit content in `content/` directory (or `private/content/` for private content)
+2. **Start Development**: Run `npm run dev` for standard development or `npm run dev-with-private` to include private content
+3. **Hot Reload**: Changes to content trigger automatic rebuild and browser refresh via WebSocket
+4. **Configuration Changes**: Require server restart - use `npm run kill` then restart
+5. **Port Management**: Use `npm run serve-auto` for automatic port detection if 8080 is busy
+6. **Testing**: Run `npm run test` for unit tests, `npm run test:coverage` for coverage reports
+7. **Quality Checks**: Use `npm run check` for TypeScript and Prettier validation
 
 ## Code Style & Standards
 
@@ -154,12 +191,19 @@ The site uses carefully configured plugins for:
 - Utility Scripts: `scripts/` directory for build and maintenance scripts
 - **CLAUDE.md must remain in the root directory** - do not move it to docs/
 
-## Repository Management
+## Repository Structure
 
+### Private vs Public Content
 - **Private Repository**: Contains all content, build artifacts, and development files
 - **Public Repository**: Source code only - no content, build artifacts, or private files
-- **Sanitization**: Automatic sanitization system removes sensitive content before public pushes
-- **Git LFS**: Large files (videos, images, JSON) are handled by Git LFS for faster pushes
+- **Content Separation**: `content/` for public content, `private/content/` for private content
+- **Sanitization**: Comprehensive sanitization system in `scripts/sanitize/` removes sensitive content
+- **Testing**: `npm run test-sanitization` validates sanitization rules before applying
+
+### File Management
+- **Git LFS**: Large files (videos, images, JSON embeddings) handled by Git LFS
+- **Build Artifacts**: All build outputs excluded from git via .gitignore
+- **Cache Management**: Semantic cache and embeddings managed separately
 
 ## Git Operations - STRICT RULES
 
@@ -189,14 +233,29 @@ The site uses carefully configured plugins for:
 - Focus on clear, obvious fixes rather than complex type system changes
 - When hitting the limit, provide a summary of the remaining issues to the user
 
-## Important Notes
+## Important Implementation Details
 
-- The site uses Preact instead of React for smaller bundle size
-- Custom graph link generation script runs before each build to maintain graph connectivity
-- Hot reload via WebSocket connections
-- Deployed at garden.samlazrak.com
-- AI features use TensorFlow.js for client-side semantic search
-- Canvas content is supported with Pixi.js integration
+### Framework Choices
+- **Preact over React**: Smaller bundle size and better performance
+- **esbuild**: Fast compilation with Lightning CSS for optimized styling
+- **TypeScript Strict**: All new code must use TypeScript with strict type checking
+
+### Build Process
+- **Graph Links**: Hybrid graph link generation runs before each build for connectivity
+- **Hot Reload**: WebSocket-based hot reload for content and component changes
+- **Parallel Processing**: Workerpool for CPU-intensive tasks like embeddings
+- **Caching**: Semantic cache system for faster subsequent builds
+
+### Deployment
+- **Production**: Deployed at garden.samlazrak.com via Netlify
+- **Functions**: Serverless functions in `netlify/functions/` for AI features
+- **Static Assets**: Optimized asset handling with custom emitters
+
+### Performance Optimizations
+- **Client-side AI**: TensorFlow.js for semantic search without server round-trips
+- **Canvas Rendering**: Pixi.js for efficient interactive graphics
+- **Lazy Loading**: Components and AI features load on demand
+- **Code Splitting**: Modular architecture for optimal loading
 
 ## Sub-Agent Usage
 

@@ -283,19 +283,25 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
 
       let transformedCSS = stylesheet
       try {
-        transformedCSS = transform({
-          filename: "the-rats-garden-of-wisdom.css",
-          code: Buffer.from(stylesheet),
-          minify: true,
-          targets: {
-            safari: (15 << 16) | (6 << 8), // 15.6
-            ios_saf: (15 << 16) | (6 << 8), // 15.6
-            edge: 115 << 16,
-            firefox: 102 << 16,
-            chrome: 109 << 16,
-          },
-          include: Features.MediaQueries,
-        }).code.toString()
+        // Skip lightningcss processing if CSS contains SCSS syntax
+        if (stylesheet.includes('$') || stylesheet.includes('@use') || stylesheet.includes('@import')) {
+          console.warn('Skipping lightningcss processing due to SCSS syntax detected')
+          transformedCSS = stylesheet
+        } else {
+          transformedCSS = transform({
+            filename: "the-rats-garden-of-wisdom.css",
+            code: Buffer.from(stylesheet),
+            minify: true,
+            targets: {
+              safari: (15 << 16) | (6 << 8), // 15.6
+              ios_saf: (15 << 16) | (6 << 8), // 15.6
+              edge: 115 << 16,
+              firefox: 102 << 16,
+              chrome: 109 << 16,
+            },
+            include: Features.MediaQueries,
+          }).code.toString()
+        }
       } catch (err) {
         console.error("Failed to transform CSS with lightningcss:", err)
         console.error("Falling back to unminified CSS")
