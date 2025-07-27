@@ -1,19 +1,19 @@
 import path from "path"
-import { QuartzEmitterPlugin } from "../types"
-import { QuartzComponentProps } from "../../components/types"
-import HeaderConstructor from "../../components/Header"
-import BodyConstructor from "../../components/Body"
-import { pageResources, renderPage } from "../../components/renderPage"
-import { FullPageLayout } from "../../cfg"
-import { pathToRoot } from "../../util/path"
-import { defaultContentPageLayout, sharedPageComponents } from "../../../quartz.layout"
-import { Content } from "../../components"
-import { styleText } from "util"
-import { write } from "./helpers"
-import { BuildCtx } from "../../util/ctx"
 import { Node } from "unist"
+import { styleText } from "util"
+import { defaultContentPageLayout, sharedPageComponents } from "../../../quartz.layout"
+import { FullPageLayout } from "../../cfg"
+import { Content } from "../../components"
+import BodyConstructor from "../../components/Body"
+import HeaderConstructor from "../../components/Header"
+import { pageResources, renderPage } from "../../components/renderPage"
+import { QuartzComponentProps } from "../../components/types"
+import { BuildCtx } from "../../util/ctx"
+import { pathToRoot } from "../../util/path"
 import { StaticResources } from "../../util/resources"
+import { QuartzEmitterPlugin } from "../types"
 import { QuartzPluginData } from "../vfile"
+import { write } from "./helpers"
 
 async function processContent(
   ctx: BuildCtx,
@@ -79,7 +79,7 @@ export const ContentPage: QuartzEmitterPlugin<Partial<FullPageLayout>> = (userOp
 
       for (const [tree, file] of content) {
         const slug = file.data.slug!
-        if (slug === "the-rats-garden-of-wisdom") {
+        if (slug === "the-rats-garden-of-wisdom" || slug === "index") {
           containsIndex = true
         }
 
